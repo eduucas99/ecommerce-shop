@@ -1,7 +1,7 @@
 import { initialData } from "@/seed/seed";
-import notFound from "./not-found";
+import { notFound } from "next/navigation";
 import { titleFont } from "@/config/fonts";
-
+import { SizeSelector } from "@/components/index"
 interface Props {
   params: {
     slug: string;
@@ -32,7 +32,7 @@ export default async function({params}: Props) {
         <p className="text-lg mb-5">${product?.price.toFixed(2)}</p>
 
         {/* selector de Tallas */}
-
+        <SizeSelector selectedSize={product.sizes[0]} availableSizes={product.sizes} />
         {/* Selector de Cantidad */}
 
         {/* Button */}
