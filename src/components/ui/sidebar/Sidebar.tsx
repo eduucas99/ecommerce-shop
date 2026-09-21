@@ -29,7 +29,10 @@ export const Sidebar = () => {
 
         {/* SideMenu */}
         <nav 
-            //Todo: clsx es una herramienta de Tailwind para poder colocar condiciones. En este caso oculta el nav cuando isSideMenuOpen es falso.
+            /*
+             ? clsx es una herramienta de Tailwind para poder colocar condiciones. En este caso oculta el nav 
+             ? cuando isSideMenuOpen es falso.
+            */
             className={
                 clsx(
                     'fixed p-5 right-0 top-0 w-125 h-screen bg-white z-20 shadow-2xl transform transition-all duration-200',
