@@ -1,28 +1,47 @@
 'use client';
 import { IoCloseOutline, IoSearchOutline, IoPersonOutline, IoTicketOutline, IoLogInOutline, IoLogOutOutline, IoShirtOutline, IoPeopleOutline } from 'react-icons/io5'
 import Link from 'next/link';
+import { useUIStore } from '@/store';
+import clsx from 'clsx';
 
 export const Sidebar = () => {
+    const isSideMenuOpen = useUIStore(state => state.isSideMenuOpen);
+    const closeMenu = useUIStore(state => state.closeSideMenu);
+
   return (
     <div className=''>
         {/* Black Background */}
-        <div className='fixed top-0 left-0 w-screen h-screen z-10 bg-black opacity-30'>
-
-        </div>
+        {
+            isSideMenuOpen && (
+                <div className='fixed top-0 left-0 w-screen h-screen z-10 bg-black opacity-30' />
+            )
+        }
 
         {/* Blur */}
-        <div className='fade-in fixed top-0 left-0 w-screen h-screen z-10 backdrop-filter backdrop-blur-sm'>
-
-        </div>
+        {   
+            isSideMenuOpen && (
+                <div
+                    onClick={closeMenu} 
+                    className='fade-in fixed top-0 left-0 w-screen h-screen z-10 backdrop-filter backdrop-blur-sm' 
+                />
+            )
+        }
 
         {/* SideMenu */}
         <nav 
-            //Todo: efecto de slide
-            className='fixed p-5 right-0 top-0 w-125 h-screen bg-white z-20 shadow-2xl transform transition-all duration-200'>
+            //Todo: clsx es una herramienta de Tailwind para poder colocar condiciones. En este caso oculta el nav cuando isSideMenuOpen es falso.
+            className={
+                clsx(
+                    'fixed p-5 right-0 top-0 w-125 h-screen bg-white z-20 shadow-2xl transform transition-all duration-200',
+                    {
+                        "translate-x-full": !isSideMenuOpen
+                    }
+                )
+            }>
             <IoCloseOutline 
                 size={50}
                 className='absolute top-5 right-5 cursor-pointer'
-                onClick={()=> console.log("click")}
+                onClick={()=> closeMenu()}
             />
             {/* Input */}
             <div className='relative mt-14'>
