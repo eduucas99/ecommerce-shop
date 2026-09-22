@@ -1,7 +1,7 @@
 import { initialData } from "@/seed/seed";
 import { notFound } from "next/navigation";
 import { titleFont } from "@/config/fonts";
-import { SizeSelector } from "@/components/index"
+import { QuantitySelector, SizeSelector } from "@/components/index"
 interface Props {
   params: {
     slug: string;
@@ -32,9 +32,14 @@ export default async function({params}: Props) {
         <p className="text-lg mb-5">${product?.price.toFixed(2)}</p>
 
         {/* selector de Tallas */}
-        <SizeSelector selectedSize={product.sizes[0]} availableSizes={product.sizes} />
+        <SizeSelector
+          selectedSize={product.sizes[0]} 
+          availableSizes={product.sizes} 
+        />
         {/* Selector de Cantidad */}
-
+        <QuantitySelector 
+          quantity={2}
+        />
         {/* Button */}
         <button className="btn-primary my-5 cursor-pointer">
           Agregar al carrito
