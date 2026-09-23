@@ -56,7 +56,7 @@ export default function() {
             }
           </div>
           {/* Checkout - Resumen de la compra */}
-          <div className="bg-white rounded-xl shadow-xl p-7 max-h-72">
+          <div className="ml-6 mt-10 bg-white rounded-xl shadow-xl p-7 h-fit">
             <h2 className="text-2xl mb-2">Resumen de compra</h2>
             
             <div className="grid grid-cols-2">
