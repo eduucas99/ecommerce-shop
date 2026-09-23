@@ -66,8 +66,8 @@ export default function() {
               <span>Impuestos (%15)</span>
               <span className="text-right">$ 18.000</span>
               
-              <span className="text-2xl mt-5">Impuestos (%15)</span>
-              <span className="text-2xl mt-5 text-right">$ 18.000</span>
+              <span className="text-2xl mt-5">Total (%15)</span>
+              <span className="text-2xl mt-5 text-right">$ 118.000</span>
             </div>
 
             <div className="mt-5 mb-2 w-full">
