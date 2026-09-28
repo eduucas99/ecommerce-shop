@@ -1,15 +1,28 @@
 'use server'
 import { db } from "@/prisma/db"
 
-export const getPaginatedProductsWithImages = async() =>{
+interface PaginationOptions {
+    page?: number;
+    limit?: number;
+}
+
+export const getPaginatedProductsWithImages = async({
+    page = 1,
+    limit = 12
+}: PaginationOptions) =>{
+    if ( isNaN(Number(page)) ) page = 1;
+    if ( page < 1 ) page = 1;
+
     try {
         const products = await db.orm.public.Product
             .include("ProductImage", (image) =>
                 image
                 .select("url")
                 .orderBy((i) => i.id.asc())
-                
-            ).limit(3).all();
+            )
+            .limit(limit)
+            .offset((page - 1) * limit)
+            .all();
 
         return {
             currentPage: 1,
