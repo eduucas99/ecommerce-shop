@@ -25,6 +25,7 @@ model Category {
 
 model Product {
   id          String        @id @default(uuid())
+  title       String
   description String?
   inStock     Int
   price       Float         @default(0)
@@ -44,6 +45,7 @@ model Product {
 model ProductImage {
   id          Int          @id @default(autoincrement())
   url         String
+
   product     Product      @relation(fields: [productId], references: [id])
   productId   String
 }

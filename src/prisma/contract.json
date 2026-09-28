@@ -4,15 +4,15 @@
   "target": "postgres",
   "profileHash": "3916f444a8a17ad749191acf9e08dad97d1a327b88c2f1d45d12f240296aa8b2",
   "roots": {
-    "category": {
+    "Category": {
       "model": "Category",
       "namespace": "public"
     },
-    "product": {
+    "Product": {
       "model": "Product",
       "namespace": "public"
     },
-    "productImage": {
+    "ProductImage": {
       "model": "ProductImage",
       "namespace": "public"
     }
@@ -121,7 +121,7 @@
                 }
               },
               "namespaceId": "public",
-              "table": "category"
+              "table": "Category"
             }
           },
           "Product": {
@@ -196,6 +196,13 @@
                   "codecId": "pg/text@1",
                   "kind": "scalar"
                 }
+              },
+              "title": {
+                "nullable": false,
+                "type": {
+                  "codecId": "pg/text@1",
+                  "kind": "scalar"
+                }
               }
             },
             "relations": {
@@ -259,10 +266,13 @@
                 },
                 "tags": {
                   "column": "tags"
+                },
+                "title": {
+                  "column": "title"
                 }
               },
               "namespaceId": "public",
-              "table": "product"
+              "table": "Product"
             }
           },
           "ProductImage": {
@@ -320,7 +330,7 @@
                 }
               },
               "namespaceId": "public",
-              "table": "productImage"
+              "table": "ProductImage"
             }
           }
         }
@@ -332,7 +342,7 @@
       "public": {
         "entries": {
           "table": {
-            "category": {
+            "Category": {
               "columns": {
                 "id": {
                   "codecId": "pg/text@1",
@@ -360,27 +370,27 @@
                 }
               ]
             },
-            "product": {
+            "Product": {
               "checks": [
                 {
                   "expression": "\"gender\" IN ('men', 'women', 'kid', 'unisex')",
-                  "name": "product_gender_check_6b811373",
-                  "prefix": "product_gender_check"
+                  "name": "Product_gender_check_6b811373",
+                  "prefix": "Product_gender_check"
                 },
                 {
                   "expression": "\"sizes\"::text[] <@ ARRAY['XS', 'S', 'M', 'L', 'XL', 'XXL', 'XXXL']::text[]",
-                  "name": "product_sizes_check_c26bf5b4",
-                  "prefix": "product_sizes_check"
+                  "name": "Product_sizes_check_c26bf5b4",
+                  "prefix": "Product_sizes_check"
                 },
                 {
                   "expression": "array_position(\"sizes\", NULL) IS NULL",
-                  "name": "product_sizes_elem_not_null_099c54be",
-                  "prefix": "product_sizes_elem_not_null"
+                  "name": "Product_sizes_elem_not_null_099c54be",
+                  "prefix": "Product_sizes_elem_not_null"
                 },
                 {
                   "expression": "array_position(\"tags\", NULL) IS NULL",
-                  "name": "product_tags_elem_not_null_aecbe9e2",
-                  "prefix": "product_tags_elem_not_null"
+                  "name": "Product_tags_elem_not_null_aecbe9e2",
+                  "prefix": "Product_tags_elem_not_null"
                 }
               ],
               "columns": {
@@ -450,6 +460,11 @@
                   "many": true,
                   "nativeType": "text",
                   "nullable": false
+                },
+                "title": {
+                  "codecId": "pg/text@1",
+                  "nativeType": "text",
+                  "nullable": false
                 }
               },
               "foreignKeys": [
@@ -459,14 +474,14 @@
                       "categoryId"
                     ],
                     "namespaceId": "public",
-                    "tableName": "product"
+                    "tableName": "Product"
                   },
                   "target": {
                     "columns": [
                       "id"
                     ],
                     "namespaceId": "public",
-                    "tableName": "category"
+                    "tableName": "Category"
                   }
                 }
               ],
@@ -475,16 +490,16 @@
                   "columns": [
                     "categoryId"
                   ],
-                  "name": "product_categoryId_idx_15c304f2",
-                  "prefix": "product_categoryId_idx",
+                  "name": "Product_categoryId_idx_15c304f2",
+                  "prefix": "Product_categoryId_idx",
                   "unique": false
                 },
                 {
                   "columns": [
                     "gender"
                   ],
-                  "name": "product_gender_idx_cc070ede",
-                  "prefix": "product_gender_idx",
+                  "name": "Product_gender_idx_cc070ede",
+                  "prefix": "Product_gender_idx",
                   "unique": false
                 }
               ],
@@ -501,7 +516,7 @@
                 }
               ]
             },
-            "productImage": {
+            "ProductImage": {
               "columns": {
                 "id": {
                   "codecId": "pg/int4@1",
@@ -530,14 +545,14 @@
                       "productId"
                     ],
                     "namespaceId": "public",
-                    "tableName": "productImage"
+                    "tableName": "ProductImage"
                   },
                   "target": {
                     "columns": [
                       "id"
                     ],
                     "namespaceId": "public",
-                    "tableName": "product"
+                    "tableName": "Product"
                   }
                 }
               ],
@@ -546,8 +561,8 @@
                   "columns": [
                     "productId"
                   ],
-                  "name": "productImage_productId_idx_5858600a",
-                  "prefix": "productImage_productId_idx",
+                  "name": "ProductImage_productId_idx_5858600a",
+                  "prefix": "ProductImage_productId_idx",
                   "unique": false
                 }
               ],
@@ -587,10 +602,10 @@
         "kind": "postgres-schema"
       }
     },
-    "storageHash": "4ddee523d23cd4c61bb4b2f7a2bb80450e5f8d2354ea8fdd8d6fb18d654c5e3d"
+    "storageHash": "6059fc750cdac72665ad5205b5cb12342fbd68949f762c34ce559d86f9f08126"
   },
   "execution": {
-    "executionHash": "9f880d5b5067b814ec113b426d01af48841f8dc3029cfa146bc2efbfcdf8a034",
+    "executionHash": "032a7a8a03a069182947874cc3ce23f5d18bf5b05c060c06d26d83936d6622a6",
     "mutations": {
       "defaults": [
         {
@@ -599,9 +614,9 @@
             "kind": "generator"
           },
           "ref": {
-            "column": "id",
-            "namespace": "public",
-            "table": "category"
+            "entry": "Category",
+            "field": "id",
+            "namespace": "public"
           }
         },
         {
@@ -610,9 +625,9 @@
             "kind": "generator"
           },
           "ref": {
-            "column": "id",
-            "namespace": "public",
-            "table": "product"
+            "entry": "Product",
+            "field": "id",
+            "namespace": "public"
           }
         }
       ]
@@ -631,6 +646,8 @@
       "checkConstraint": true,
       "defaultInInsert": true,
       "enums": true,
+      "insertOnConflictSkip": true,
+      "insertOnConflictWithoutTarget": true,
       "lateral": true,
       "returning": true,
       "scalarList": true
