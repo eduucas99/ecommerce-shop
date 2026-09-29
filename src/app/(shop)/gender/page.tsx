@@ -9,7 +9,7 @@ type Props = {
   searchParams: Promise<{ page?: string }>;
 };
 
-export default async function({  params, searchParams }: Props) {
+export default async function GenderPage({  params, searchParams }: Props) {
   
   const arrayCategory = ['men', 'women', 'kid', 'unisex'];
   const { gender } = await params;

@@ -1,6 +1,7 @@
+export const revalidate = 60;
+
 import { redirect, notFound } from "next/navigation";
-import { Pagination, ProductGrid } from "@/components";
-import { Title } from "@/components";
+import { Pagination, ProductGrid, Title } from "@/components";
 import { Category } from "@/interfaces";
 import { getPaginatedProductsWithImages } from "@/app/actions";
 
@@ -9,7 +10,7 @@ type Props = {
   searchParams: Promise<{ page?: string }>;
 };
 
-export default async function({  params, searchParams }: Props) {
+export default async function GenderByPage({  params, searchParams }: Props) {
   
   const arrayCategory = ['men', 'women', 'kid', 'unisex'];
   const { gender } = await params;

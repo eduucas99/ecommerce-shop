@@ -9,7 +9,7 @@ interface Props {
   }
 }
 
-export default async function({params}: Props) {
+export default async function ProductPage({params}: Props) {
   const { slug } = await params;
   
   const product = initialData.products.find( p => p.slug === slug);

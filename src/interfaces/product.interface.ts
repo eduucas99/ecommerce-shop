@@ -4,9 +4,9 @@ export interface Product {
     images: string[];
     inStock: number;
     price: number;
-    sizes: Size[];
+    sizes: readonly Size[];
     slug: string;
-    tags: string[];
+    tags: readonly string[];
     title: string;
     //todo: type: Type;
     gender: Category;

@@ -1,8 +1,10 @@
-import { Title } from "@/components";
-import { ProductGrid } from '@/components/products/product-grid/ProductGrid';
-import { getPaginatedProductsWithImages } from "../actions";
+
+export const revalidate = 60; 
+
 import { redirect } from "next/navigation";
-import { Pagination } from '@/components/index';
+import { Pagination, ProductGrid, Title } from "@/components";
+import { getPaginatedProductsWithImages } from "../actions";
+
 
 type Props = {
   searchParams: Promise<{ page?: string }>;

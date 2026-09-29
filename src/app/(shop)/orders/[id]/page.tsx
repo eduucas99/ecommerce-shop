@@ -15,7 +15,7 @@ interface Props {
     id: string;
   }
 }
-export default async function({params}: Props) {
+export default async function OrdersByIdPage({params}: Props) {
   const {id} = await params;
   //Todo: verificar
   //redirect(/)
