@@ -14,6 +14,7 @@ export const getPaginatedProductsWithImages = async({
     if ( page < 1 ) page = 1;
 
     try {
+        //1. Obtener los productos
         const products = await db.orm.public.Product
             .include("ProductImage", (image) =>
                 image
@@ -23,10 +24,13 @@ export const getPaginatedProductsWithImages = async({
             .limit(limit)
             .offset((page - 1) * limit)
             .all();
-
+        //2. Obtener el total de páginas
+        const { total: totalCount } = await db.orm.public.Product.aggregate((a) => ({ total: a.count() }));
+        const totalPages = Math.ceil(totalCount / limit);
+        
         return {
-            currentPage: 1,
-            totalPages: 10,
+            currentPage: page,
+            totalPages: totalPages,
             products: products.map( p => ({
                 ...p,
                 images: p.ProductImage.map( image => image.url),

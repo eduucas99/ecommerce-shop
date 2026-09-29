@@ -10,8 +10,9 @@ type Props = {
 export default async function Home({ searchParams }: Props) {
   const page = parseInt((await searchParams).page ?? '1');
 
-  const { products } = await getPaginatedProductsWithImages({ page });
-  
+  const { products, currentPage, totalPages } = await getPaginatedProductsWithImages({ page });
+  console.log("pages: ",{currentPage, totalPages})
+
   if( products.length === 0 ){
     redirect('/')
   }
