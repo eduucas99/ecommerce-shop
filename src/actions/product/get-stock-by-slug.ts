@@ -1,10 +1,11 @@
 'use server';
 
 import { db } from "@/prisma/db";
+import { sleep } from "@/utils";
 
 export const getStockBySlug = async(slug: string): Promise<number> => {
     try {
-            
+        await sleep(3)
         const product = await db.orm.public.Product.where({
             slug
         })
