@@ -3,7 +3,7 @@ export const revalidate = 60;
 import { redirect, notFound } from "next/navigation";
 import { Pagination, ProductGrid, Title } from "@/components";
 import { Category } from "@/interfaces";
-import { getPaginatedProductsWithImages } from "@/app/actions";
+import { getPaginatedProductsWithImages } from "@/actions";
 
 type Props = {
   params: Promise<{ gender: string }>;
