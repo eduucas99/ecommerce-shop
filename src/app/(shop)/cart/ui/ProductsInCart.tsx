@@ -7,6 +7,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { IoTrashOutline } from "react-icons/io5";
 import { currencyFormat } from '@/utils/currencyFormat';
+import { redirect } from "next/navigation";
 
 
 export const ProductsInCart = () => {
@@ -14,13 +15,17 @@ export const ProductsInCart = () => {
     const removeProduct = useCartStore( state => state.removeProduct );
     const [loaded, setLoaded] = useState(false);
     const productsInCart = useCartStore( state => state.cart );
-
+    
     useEffect(() => {
         setLoaded(true);
     }, []);
-
+    
     if(!loaded){
         return <p>Loading...</p>;
+    }
+
+    if (productsInCart.length === 0){
+        redirect("/empty");
     }
 
     return (
@@ -41,7 +46,7 @@ export const ProductsInCart = () => {
                         />
                         <div>
                             <Link
-                                className="hover:underline cursor-pointer" 
+                                className="font-semibold bg-gray-400 hover:underline cursor-pointer" 
                                 href={`/product/${product.slug}`}>
                                 <p>{product.title}</p>
                             </Link>
