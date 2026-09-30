@@ -10,7 +10,12 @@ export default function EmptyPage() {
           Tu carrito está vacio
         </h1>
 
-        <Link className="text-blue-500 mt-2 text-4xl" href="/">Regresar</Link>
+        <Link
+          className="my-2 inline-flex cursor-pointer items-center justify-center rounded-sm bg-blue-800 px-4 py-3 text-white transition-colors hover:bg-neutral-800"
+          href="/"
+        >
+          Seguir comprando
+        </Link>
       </div>
     </div>
   );
