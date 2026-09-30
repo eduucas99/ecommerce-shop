@@ -7,6 +7,7 @@ import { ProductSlideShow, QuantitySelector, SizeSelector } from "@/components/i
 import { ProductMobileSlideShow } from "@/components/product/slideshow/ProductMobileSlideShow";
 import { getProductBySlug } from "@/actions";
 import { StockLabel } from '@/components/product/stock-label/StockLabel';
+import { AddToCart } from './ui/AddToCart';
 
 interface Props {
   params: {
@@ -70,20 +71,7 @@ export default async function ProductPage({params}: Props) {
 
         <p className="mb-6 mt-2 text-xl font-medium">${product?.price.toFixed(2)}</p>
 
-        {/* selector de Tallas */}
-        <SizeSelector
-          selectedSize={product.sizes[0]} 
-          availableSizes={product.sizes} 
-        />
-        {/* Selector de Cantidad */}
-        <div className="my-6 flex items-center justify-between">
-          <span className="text-sm font-medium">Cantidad</span>
-          <QuantitySelector quantity={1} />
-        </div>
-        {/* Button */}
-        <button className="my-2 w-full cursor-pointer rounded-sm bg-blue-800 px-4 py-3 text-white transition-colors hover:bg-neutral-800">
-          Agregar al carrito
-        </button>
+        <AddToCart product={product}/>
 
         <div className="mt-8 border-t border-neutral-200 pt-5">
           <h3 className="mb-2 text-sm font-semibold">Descripción</h3>
