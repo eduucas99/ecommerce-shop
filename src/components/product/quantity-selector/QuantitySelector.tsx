@@ -17,7 +17,7 @@ export const QuantitySelector = ({quantity, onQuantityChanged}: Props) => {
 
   return (
     <div className="my-2 flex items-center justify-between gap-2">
-        <span className="text-sm font-medium">Cantidad:</span>
+        <span className="text-sm font-medium">Cantidad</span>
         <div className="flex bg-gray-300 rounded">
             <button onClick={()=>onValueChange(-1)} className="cursor-pointer">
                 <IoRemoveCircleOutline size={20} />

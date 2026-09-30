@@ -17,7 +17,7 @@ export const OrderSummary = () => {
     if( !loaded ) return <p>Loading...</p>;
 
   return (
-     <div className="min-[640px]:max-[690px]:ml-7 mt-10 bg-white rounded-xl shadow-xl p-7 h-fit">
+    <div className="h-fit w-full self-start rounded-xl bg-white p-7 shadow-xl max-[961px]:col-span-full">
         <h2 className="text-2xl mb-2">Resumen de compra</h2>
         
         <div className="grid grid-cols-2">
@@ -29,6 +29,9 @@ export const OrderSummary = () => {
             
             <span>Impuestos (%15)</span>
             <span className="text-right">{ currencyFormat(tax) }</span>
+            
+            <span>Envío</span>
+            <span className="text-right">Gratis</span>
             
             <span className="text-2xl mt-5">Total</span>
             <span className="text-2xl mt-5 text-right">{ currencyFormat(total) }</span>

@@ -32,7 +32,7 @@ export const ProductsInCart = () => {
         <>
             {
                 productsInCart.map(product => (
-                    <div key={`${product.slug} - ${ product.size }`} className="flex mb-5">
+                    <div key={`${product.slug} - ${ product.size }`} className="mb-5 flex max-[961px]:items-center max-[961px]:justify-center">
                         <Image
                             src={`/products/${product.image}`}
                             width={100}
@@ -46,12 +46,12 @@ export const ProductsInCart = () => {
                         />
                         <div>
                             <Link
-                                className="font-semibold bg-gray-400 hover:underline cursor-pointer" 
+                                className="font-semibold text-gray-900 hover:underline cursor-pointer" 
                                 href={`/product/${product.slug}`}>
                                 <p>{product.title}</p>
                             </Link>
-                            <p className="mt-1">Talle:  
-                                <span className="font-bold ml-2">
+                            <p className="mt-1">Talle:
+                                <span className="font-bold text-gray-700 ml-1">
                                     {product.size}
                                 </span>
                             </p>

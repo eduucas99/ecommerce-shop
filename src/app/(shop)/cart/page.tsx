@@ -5,13 +5,13 @@ import { OrderSummary } from "./ui/OrderSummary";
 
 export default function CartPage() {
   return (
-    <div className="flex justify-center items-center mb-72 px-10 sm:px-0">
+    <div className="sm:ml-0 flex justify-center items-center mb-72 px-0">
       <div className="flex flex-col w-250">
-        <Title title="Carrito"/>
+        <Title title="Tu carrito"/>
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-10">
           {/* Carrito */}
           <div className="flex flex-col mt-5">
-            <span className="text-xl">Agregas mas próductos</span>
+            <span className="text-xl">Agregar mas próductos</span>
             <Link href='/' className="underline mb-5 mt-1">
               Continúa comprando
             </Link>
