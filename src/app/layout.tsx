@@ -3,7 +3,11 @@ import "./globals.css";
 import {geistSans, geistMono} from "@/config/fonts"
 
 export const metadata: Metadata = {
-  title: "Teslo | Shop",
+  metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3000"),
+  title: {
+    template: '%s - Teslo | Shop',
+    default: 'Home - Teslo | Shop',
+  },
   description: "Tienda de productos",
 };
 

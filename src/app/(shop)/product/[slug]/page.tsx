@@ -1,11 +1,12 @@
 export const revalidate = 604800; // 7 días
 
+import type { Metadata, ResolvingMetadata } from 'next'
 import { notFound } from "next/navigation";
 import { titleFont } from "@/config/fonts";
 import { ProductSlideShow, QuantitySelector, SizeSelector } from "@/components/index"
 import { ProductMobileSlideShow } from "@/components/product/slideshow/ProductMobileSlideShow";
 import { getProductBySlug } from "@/actions";
-import { StockLabel } from '../../../../components/product/stock-label/StockLabel';
+import { StockLabel } from '@/components/product/stock-label/StockLabel';
 
 interface Props {
   params: {
@@ -13,6 +14,26 @@ interface Props {
   }
 }
 
+export async function generateMetadata(
+  { params }: Props,
+  parent: ResolvingMetadata
+): Promise<Metadata> {
+  const slug = (await params).slug
+ 
+  const product = await getProductBySlug(slug);
+ 
+  return {
+    title: product?.title ?? 'Producto no encontrado',
+    description: product?.description ?? '',
+    openGraph:{
+      title: product?.title ?? 'Producto no encontrado',
+      description: product?.description ?? '',
+      // images:[] // https://misitioweb.com/products/image.png
+      images:[`/products/${ product?.images[1] }`]
+    }
+  }
+}
+ 
 export default async function ProductPage({params}: Props) {
   const { slug } = await params;
   

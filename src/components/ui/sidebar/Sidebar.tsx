@@ -35,7 +35,7 @@ export const Sidebar = () => {
             */
             className={
                 clsx(
-                    'fixed p-5 right-0 top-0 w-125 h-screen bg-white z-20 shadow-2xl transform transition-all duration-200',
+                    'fixed p-5 right-0 top-0 sm:w-110 md:w-125  h-screen bg-white z-20 shadow-2xl transform transition-all duration-200',
                     {
                         "translate-x-full": !isSideMenuOpen
                     }
