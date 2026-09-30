@@ -44,31 +44,31 @@ export default async function ProductPage({params}: Props) {
   }
 
   return (
-    <div className="mt-5 mb-20 grid grid-cols-1 md:grid-cols-3 gap-3">
-      <div className="col-span-1 md:col-span-2">
+    <div className="mx-auto mt-5 mb-20 grid w-full max-w-[1600px] grid-cols-1 gap-8 lg:grid-cols-[minmax(0,1.7fr)_minmax(320px,0.8fr)] lg:gap-12 xl:gap-16">
+      <div className="min-w-0">
         {/* Mobile Slideshow */}
         <ProductMobileSlideShow 
           title={product.title}
           images={product.images}
-          className="block md:hidden"
+          className="block lg:hidden"
         />
 
       {/* Desktop Slideshow */}
         <ProductSlideShow 
           title={product.title}
           images={product.images}
-          className="hidden md:block"
+          className="hidden lg:block"
         />
       </div>
       {/* Detalles */}
-      <div className="col-span-1 px-5">
+      <div className="min-w-0 px-1 sm:px-5 lg:sticky lg:top-8 lg:self-start lg:px-0">
         <StockLabel slug={product.slug} />
         
-        <h1 className={`${titleFont.className} antialiased font-bold text-xl`}> 
+        <h1 className={`${titleFont.className} mt-3 text-2xl font-semibold leading-tight antialiased md:text-3xl`}> 
           { product?.title }
         </h1>
 
-        <p className="text-lg mb-5">${product?.price.toFixed(2)}</p>
+        <p className="mb-6 mt-2 text-xl font-medium">${product?.price.toFixed(2)}</p>
 
         {/* selector de Tallas */}
         <SizeSelector
@@ -76,19 +76,22 @@ export default async function ProductPage({params}: Props) {
           availableSizes={product.sizes} 
         />
         {/* Selector de Cantidad */}
-        <QuantitySelector 
-          quantity={2}
-        />
+        <div className="my-6 flex items-center justify-between">
+          <span className="text-sm font-medium">Cantidad</span>
+          <QuantitySelector quantity={1} />
+        </div>
         {/* Button */}
-        <button className="btn-primary my-5 cursor-pointer">
+        <button className="my-2 w-full cursor-pointer rounded-sm bg-blue-800 px-4 py-3 text-white transition-colors hover:bg-neutral-800">
           Agregar al carrito
         </button>
 
-        <h3 className="font-bold text-sm">Descripción</h3>
+        <div className="mt-8 border-t border-neutral-200 pt-5">
+          <h3 className="mb-2 text-sm font-semibold">Descripción</h3>
 
-        <p className="font-light">
-          {product?.description}
-        </p>
+          <p className="text-sm leading-6 text-neutral-600">
+            {product?.description}
+          </p>
+        </div>
       </div>
     </div>
   );

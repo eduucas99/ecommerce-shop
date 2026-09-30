@@ -31,9 +31,9 @@ export const StockLabel = ({slug}: Props) => {
                 </svg>
             </h1>
             ): (
-                <h1 className={`${titleFont.className} antialiased font-bold text-lg`}> 
+                <p className={`${titleFont.className} text-md text-neutral-700 antialiased`}> 
                     Stock: { stock }
-                </h1>
+                </p>
             )
         }
 

@@ -1,8 +1,6 @@
 
 
 .swiper-slide {
-  
-  /* Center slide text vertically */
   display: flex;
 }
 
@@ -16,7 +14,15 @@
 
 .swiper {
   width: 100%;
-  height: 900px;
+  height: 850px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.mySwiper2 {
+  width: min(100%, 1000px);
+  aspect-ratio: 1;
+  height: 800px;
   margin-left: auto;
   margin-right: auto;
 }
@@ -49,3 +55,12 @@
   height: 100%;
   object-fit: cover;
 }
+
+.mySwiperMobile {
+  width: min(100%, 420px);
+  aspect-ratio: 1;
+  height: auto;
+  margin-left: auto;
+  margin-right: auto;
+}
+

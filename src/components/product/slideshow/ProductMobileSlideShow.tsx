@@ -22,15 +22,15 @@ export const ProductMobileSlideShow = ({images, title, className}: Props) => {
     <div className={className}>
         <Swiper
             style={{
-                width: '100vw',
-                height: '500px'
-            }}
+            '--swiper-pagination-color': 'black',
+            } as React.CSSProperties
+            }
             pagination
             autoplay={{
                 delay: 2500
             }}
             modules={[FreeMode, Autoplay, Pagination]}
-            className="mySwiper2"
+            className="mySwiperMobile"
         >
             {
                 images.map( image => (
@@ -40,7 +40,6 @@ export const ProductMobileSlideShow = ({images, title, className}: Props) => {
                             height={ 500 }
                             src={`/products/${ image }`}
                             alt={title}
-                            className="object-fill"
                         />
                     </SwiperSlide>
                 ))
