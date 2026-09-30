@@ -1,5 +1,9 @@
 @import "tailwindcss";
 
+@theme {
+  --breakpoint-md: 961px;
+}
+
 :root {
   --primary: #274494;
   --foreground-rgb: 0, 0, 0;
@@ -20,7 +24,7 @@ body {
 @keyframes fadeIn {
   0% { opacity: 0; }
   100% { opacity: 1; }
-} 
+}
 
 @-webkit-keyframes fadeIn {
   0% { opacity: 0; }

@@ -44,24 +44,24 @@ export default async function ProductPage({params}: Props) {
   }
 
   return (
-    <div className="mx-auto mt-5 mb-20 grid w-full max-w-[1600px] grid-cols-1 gap-8 lg:grid-cols-[minmax(0,1.7fr)_minmax(320px,0.8fr)] lg:gap-12 xl:gap-16">
+    <div className="mx-auto mt-5 mb-20 grid w-full max-w-[1600px] grid-cols-1 gap-8 md:grid-cols-[minmax(0,1.7fr)_minmax(320px,0.8fr)] md:gap-12 xl:gap-16">
       <div className="min-w-0">
         {/* Mobile Slideshow */}
         <ProductMobileSlideShow 
           title={product.title}
           images={product.images}
-          className="block lg:hidden"
+          className="block md:hidden"
         />
 
       {/* Desktop Slideshow */}
         <ProductSlideShow 
           title={product.title}
           images={product.images}
-          className="hidden lg:block"
+          className="hidden md:block"
         />
       </div>
       {/* Detalles */}
-      <div className="min-w-0 px-1 sm:px-5 lg:sticky lg:top-8 lg:self-start lg:px-0">
+      <div className="min-w-0 px-1 sm:px-5 md:sticky md:top-8 md:self-start md:px-0">
         <StockLabel slug={product.slug} />
         
         <h1 className={`${titleFont.className} mt-3 text-2xl font-semibold leading-tight antialiased md:text-3xl`}> 
