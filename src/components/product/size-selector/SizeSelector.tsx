@@ -15,7 +15,7 @@ export const SizeSelector = ({selectedSize, availableSizes, onSizeChanged}: Prop
 
   return (
     <div className="my-6">
-      <h3 className="mb-3 text-sm font-semibold">Tallas</h3>
+      <h3 className="mb-3 text-sm font-semibold">Talle</h3>
       <div className="flex flex-wrap gap-2">
         {
           availableSizes.map( size => (
