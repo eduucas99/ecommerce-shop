@@ -3,6 +3,7 @@ import { useCartStore } from "@/store";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import { useShallow } from "zustand/react/shallow";
+import { currencyFormat } from '@/utils/currencyFormat';
 
 export const OrderSummary = () => {
 
@@ -24,13 +25,13 @@ export const OrderSummary = () => {
             <span className="text-right">{ itemsInCart === 1 ? '1 Artículo' : `${ itemsInCart } Artículos` }</span>
             
             <span>Subtotal</span>
-            <span className="text-right">$ { subTotal.toFixed(2) }</span>
+            <span className="text-right">{ currencyFormat(subTotal) }</span>
             
             <span>Impuestos (%15)</span>
-            <span className="text-right">$ { tax }</span>
+            <span className="text-right">{ currencyFormat(tax) }</span>
             
             <span className="text-2xl mt-5">Total</span>
-            <span className="text-2xl mt-5 text-right">$ { total.toFixed(2) }</span>
+            <span className="text-2xl mt-5 text-right">{ currencyFormat(total) }</span>
         </div>
 
         <div className="mt-5 mb-2 w-full">

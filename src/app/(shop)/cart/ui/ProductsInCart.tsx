@@ -6,7 +6,7 @@ import { useEffect, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { IoTrashOutline } from "react-icons/io5";
-import { CartProduct, Product, Size } from "@/interfaces";
+import { currencyFormat } from '@/utils/currencyFormat';
 
 
 export const ProductsInCart = () => {
@@ -50,9 +50,9 @@ export const ProductsInCart = () => {
                                     {product.size}
                                 </span>
                             </p>
-                            <p className="mt-1">$ 
-                                <span className="font-bold ml-2">
-                                    {product.price.toFixed(2)}
+                            <p className="mt-1">
+                                <span className="font-bold">
+                                    {currencyFormat(product.price)}
                                 </span>
                             </p>
                             <div className="flex gap-2">

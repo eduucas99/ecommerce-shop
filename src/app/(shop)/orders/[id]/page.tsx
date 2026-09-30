@@ -4,6 +4,7 @@ import Link from "next/link";
 import Image from "next/image";
 import clsx from "clsx";
 import { IoCardOutline } from 'react-icons/io5';
+import { currencyFormat } from '../../../../utils/currencyFormat';
 
 const productsInCart = [
   initialData.products[0],
@@ -57,8 +58,8 @@ export default async function OrdersByIdPage({params}: Props) {
                   />
                   <div className="mt-4">
                     <p>{product.title}</p>
-                    <p>$ {product.price} x 3</p>
-                    <p className="font-bold">Subtotal: ${product.price * 3}</p>
+                    <p>{currencyFormat(product.price)} x 3</p>
+                    <p className="font-bold">Subtotal: {currencyFormat(product.price)}</p>
                   </div>
                 </div>
               ))

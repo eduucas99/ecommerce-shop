@@ -3,6 +3,7 @@ import { initialData } from "@/seed/seed";
 import Link from "next/link";
 import Image from "next/image";
 import { QuantitySelector } from "@/components";
+import { currencyFormat } from '../../../utils/currencyFormat';
 
 const productsInCart = [
   initialData.products[0],
@@ -41,7 +42,7 @@ export default function CheckoutPage() {
                   />
                   <div className="mt-4">
                     <p>{product.title}</p>
-                    <p>$ {product.price} x 3</p>
+                    <p>{currencyFormat(product.price)} x 3</p>
                     <p className="font-bold">Subtotal: ${product.price * 3}</p>
                   </div>
                 </div>
