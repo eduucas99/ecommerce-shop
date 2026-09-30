@@ -10,6 +10,11 @@ interface Props {
 export const AddToCart = ({product}: Props) => {
 
     const [size, setSize] = useState<Size|undefined>();
+    const [quantity, setQuantity] = useState<number>(1);
+
+    const addToCart = () => {
+        if (!size) return;
+    }
 
     return (
         <>
@@ -20,13 +25,14 @@ export const AddToCart = ({product}: Props) => {
                 onSizeChanged={ setSize }
             />
             {/* Selector de Cantidad */}
-            <div className="my-6 flex items-center justify-between">
-                <span className="text-sm font-medium">Cantidad</span>
-                <QuantitySelector quantity={1} />
-            </div>
+            
+            <QuantitySelector quantity={quantity} onQuantityChanged={setQuantity} />
+            
             {/* Button */}
-            <button className="my-2 w-full cursor-pointer rounded-sm bg-blue-800 px-4 py-3 text-white transition-colors hover:bg-neutral-800">
-            Agregar al carrito
+            <button 
+                onClick={addToCart}
+                className="my-2 w-full cursor-pointer rounded-sm bg-blue-800 px-4 py-3 text-white transition-colors hover:bg-neutral-800">
+                Agregar al carrito
             </button>
         </>
     )
