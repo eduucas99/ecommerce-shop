@@ -1,5 +1,6 @@
 import { CartProduct } from "@/interfaces";
 import { create } from "zustand";
+import { persist } from "zustand/middleware";
 
 interface State {
     cart: CartProduct[];
@@ -9,8 +10,9 @@ interface State {
 }
 
 export const useCartStore = create<State>()( 
+    
     (set, get) => ({
-
+        
         cart:[],
 
         //Methods
@@ -24,6 +26,7 @@ export const useCartStore = create<State>()(
 
             if ( !productInCart ){
                 set({ cart: [...cart, product] })
+                return;
             }
 
             // 2. Se que el producto existe por talla, tengo que incrementarlo
