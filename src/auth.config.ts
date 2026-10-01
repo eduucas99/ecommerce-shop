@@ -10,15 +10,14 @@ export const authConfig = {
         newUser: "/auth/new-account",
     },
     callbacks: {
-        jwt({ token, user }) {
+        async jwt({ token, user }) {
             if ( user ){
                 token.data = user;
             }
-            // console.log("JWT callback:", { token, user });
-            return token;
 
+            return token;
         },
-        session({ session, token, user }) {
+        async session({ session, token, user }) {
             session.user = token.data as any;
             return session;
         },
@@ -43,7 +42,7 @@ export const authConfig = {
 
                 // Regresar el usuario si las credenciales son válidas
                 const { password: _, ...rest } = user;
-                console.log("Usuario autenticado:", rest);
+
                 return rest;
             },
         }),

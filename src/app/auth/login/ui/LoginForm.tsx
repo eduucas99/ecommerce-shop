@@ -1,19 +1,27 @@
 'use client';
 import Link from "next/link";
-import { useActionState } from 'react';
+import { useEffect, useActionState } from 'react';
 import { authenticate } from '@/actions';
 import { IoInformationOutline } from "react-icons/io5";
-import { useSearchParams } from 'next/navigation';
 import clsx from "clsx";
-
+import { useRouter } from "next/navigation";
+import { useSession } from "next-auth/react";
 export const LoginForm = () => {
-    const searchParams = useSearchParams();
-    const callbackUrl = searchParams.get('callbackUrl') || '/';
-
-    const [errorMessage, formAction, isPending] = useActionState(
+    const router = useRouter();
+    const [state, formAction, isPending] = useActionState(
       authenticate,
       undefined,
     );
+
+    const {update} = useSession();
+    useEffect(() => {
+      if(state === 'Success') {
+        update();
+        router.push('/');
+      }
+    }, [state]);
+
+    
 
   return (
     <form action={ formAction } className="flex flex-col">
@@ -36,14 +44,13 @@ export const LoginForm = () => {
           aria-live="polite"
           aria-atomic="true"
         >
-          {errorMessage && (
+          {state === 'CredentialsSignin' && (
             <div className="mb-2 flex flex-row items-center">
               <IoInformationOutline className="h-5 w-5 text-red-500" />
               <p className="text-sm font-semibold text-red-500">Creedenciales inválidas</p>
             </div>
           )}
         </div>
-        <input type="hidden" name="redirectTo" value={callbackUrl} />
         <button
           type="submit"
           className={clsx({

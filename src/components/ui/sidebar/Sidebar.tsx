@@ -1,14 +1,18 @@
 'use client';
 import { IoCloseOutline, IoSearchOutline, IoPersonOutline, IoTicketOutline, IoLogInOutline, IoLogOutOutline, IoShirtOutline, IoPeopleOutline } from 'react-icons/io5'
 import { useUIStore } from '@/store';
-import { logout } from '@/actions/auth/logout';
+import { signOut, useSession } from 'next-auth/react';
+import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import clsx from 'clsx';
 
-export const Sidebar = ({ isAuthenticated }: { isAuthenticated: boolean }) => {
+export const Sidebar = () => {
     const isSideMenuOpen = useUIStore(state => state.isSideMenuOpen);
     const closeMenu = useUIStore(state => state.closeSideMenu);
-
+    
+    const { data:session } = useSession();
+    const isAuthenticated = !!session?.user;
+    
   return (
     <div className=''>
         {/* Black Background */}
@@ -77,10 +81,7 @@ export const Sidebar = ({ isAuthenticated }: { isAuthenticated: boolean }) => {
             {
                 isAuthenticated && (
                     <button
-                        onClick={async () => {
-                            closeMenu();
-                            await logout();
-                        }}
+                        onClick={() => signOut({ callbackUrl: '/' })}
                         className='flex w-full items-center mt-10 p-2 hover:bg-gray-100 rounded transition-all cursor-pointer'
                     >
                         <IoLogOutOutline size={ 30 } />
