@@ -6,7 +6,6 @@ export default async function ProfilePage() {
     const session = await auth();
 
     if (!session?.user) {
-        // redirect("/auth/login?returnTo=/perfil");
         redirect("/");
     }
     return (
@@ -15,6 +14,10 @@ export default async function ProfilePage() {
             <pre>
                 {JSON.stringify(session.user, null, 2)}
             </pre>
+
+            <p className="text-lg bt-3">
+                Bienvenido, {session.user.name}
+            </p>
         </div>
     )
 }

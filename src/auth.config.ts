@@ -5,9 +5,23 @@ import { z } from 'zod';
 import { db } from '@/prisma/db.ts';
 
 export const authConfig = {
-  pages: {
+    pages: {
         signIn: "/auth/login",
         newUser: "/auth/new-account",
+    },
+    callbacks: {
+        jwt({ token, user }) {
+            if ( user ){
+                token.data = user;
+            }
+            // console.log("JWT callback:", { token, user });
+            return token;
+
+        },
+        session({ session, token, user }) {
+            session.user = token.data as any;
+            return session;
+        },
     },
     providers: [
         Credentials({
