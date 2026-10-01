@@ -25,9 +25,9 @@ export const SizeSelector = ({selectedSize, availableSizes, onSizeChanged}: Prop
               type="button"
               aria-pressed={size === selectedSize}
               className={clsx(
-                "h-11 min-w-12 cursor-pointer rounded-sm border px-4 text-sm font-medium transition-colors hover:bg-neutral-800 hover:text-white",
+                "h-11 min-w-12 cursor-pointer rounded-sm border px-4 text-sm font-medium transition-colors hover:bg-gray-100 hover:text-black",
                 {
-                  'border-black bg-blue-600 text-white': size === selectedSize,
+                  'border-2 border-blue-800 bg-gray-200 text-black': size === selectedSize,
                   'border-neutral-300 bg-white text-black': size !== selectedSize
                 }
               )}>
