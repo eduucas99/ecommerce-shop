@@ -68,20 +68,25 @@ export const Sidebar = () => {
             </Link>
             <Link
                 href='/'
+                onClick={()=> closeMenu()}
                 className='flex items-center mt-10 p-2 hover:bg-gray-100 rounded transition-all'
             >
                 <IoTicketOutline size={ 30 } />
                 <span className='ml-3 text-xl'>Ordenes</span>
             </Link>
             <Link
-                href='/'
+                href='/auth/login'
+                onClick={()=> closeMenu()}
                 className='flex items-center mt-10 p-2 hover:bg-gray-100 rounded transition-all'
             >
                 <IoLogInOutline size={ 30 } />
                 <span className='ml-3 text-xl'>Ingresar</span>
             </Link>
             <button
-                onClick={() => logout()}
+                onClick={async () => {
+                    closeMenu();
+                    await logout();
+                }}
                 className='flex w-full items-center mt-10 p-2 hover:bg-gray-100 rounded transition-all cursor-pointer'
             >
                 <IoLogOutOutline size={ 30 } />
@@ -93,6 +98,7 @@ export const Sidebar = () => {
 
             <Link
                 href='/'
+                onClick={()=> closeMenu()}
                 className='flex items-center mt-10 p-2 hover:bg-gray-100 rounded transition-all'
             >
                 <IoShirtOutline size={ 30 } />
@@ -101,6 +107,7 @@ export const Sidebar = () => {
             
             <Link
                 href='/'
+                onClick={()=> closeMenu()}
                 className='flex items-center mt-10 p-2 hover:bg-gray-100 rounded transition-all'
             >
                 <IoTicketOutline size={ 30 } />
@@ -109,6 +116,7 @@ export const Sidebar = () => {
             
             <Link
                 href='/'
+                onClick={()=> closeMenu()}
                 className='flex items-center mt-10 p-2 hover:bg-gray-100 rounded transition-all'
             >
                 <IoPeopleOutline size={ 30 } />

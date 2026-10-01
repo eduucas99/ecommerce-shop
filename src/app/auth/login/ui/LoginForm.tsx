@@ -8,17 +8,15 @@ import clsx from "clsx";
 
 export const LoginForm = () => {
     const searchParams = useSearchParams();
-    const callbackUrl = searchParams.get('callbackUrl') || '/products';
+    const callbackUrl = searchParams.get('callbackUrl') || '/';
 
     const [errorMessage, formAction, isPending] = useActionState(
       authenticate,
       undefined,
     );
 
-    console.log({ errorMessage, formAction, isPending });
   return (
     <form action={ formAction } className="flex flex-col">
-
         <label htmlFor="email">Correo electrónico</label>
         <input
           className="px-5 py-2 border bg-gray-200 rounded mb-5"
