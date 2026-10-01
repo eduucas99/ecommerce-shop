@@ -2,8 +2,14 @@
 import Link from "next/link";
 import { useActionState } from 'react';
 import { authenticate } from '@/actions';
+import { IoInformationOutline } from "react-icons/io5";
+import { useSearchParams } from 'next/navigation';
+import clsx from "clsx";
 
 export const LoginForm = () => {
+    const searchParams = useSearchParams();
+    const callbackUrl = searchParams.get('callbackUrl') || '/products';
+
     const [errorMessage, formAction, isPending] = useActionState(
       authenticate,
       undefined,
@@ -27,12 +33,36 @@ export const LoginForm = () => {
           type="password"
           name="password"
         />
-
+        <div
+          className="flex h-8 items-end space-x-1"
+          aria-live="polite"
+          aria-atomic="true"
+        >
+          {errorMessage && (
+            <div className="mb-2 flex flex-row items-center">
+              <IoInformationOutline className="h-5 w-5 text-red-500" />
+              <p className="text-sm font-semibold text-red-500">Creedenciales inválidas</p>
+            </div>
+          )}
+        </div>
+        <input type="hidden" name="redirectTo" value={callbackUrl} />
         <button
           type="submit"
-          className="btn-primary">
+          className={clsx({
+            "btn-primary": !isPending,
+            "btn-disabled": isPending
+          })}
+          disabled={isPending}
+        >
           Ingresar
         </button>
+
+        
+        {isPending && (
+          <div className="flex justify-center mt-2">
+            <div className="w-6 h-6 border-4 border-blue-500 border-t-transparent rounded-full animate-spin"></div>
+          </div>
+        )}
 
 
         {/* divisor l ine */ }
