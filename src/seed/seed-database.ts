@@ -4,19 +4,25 @@ import { db } from "../prisma/db.ts";
 async function main() {
     //! Borrar registros previos
     await Promise.all([
+        await db.orm.public!.User!.where({}).deleteAll(),
         await db.orm.public!.ProductImage!.where({}).deleteAll(),
         await db.orm.public!.Product!.where({}).deleteAll(),
         await db.orm.public!.Category!.where({}).deleteAll(),
     ]);
 
+    const {categories, products, users} = initialData;
+    
+    //* Inserto Usuarios 
+    await db.orm.public!.User!.createAll(users);
+    
     //* Inserto Categorias
-    const {categories, products} = initialData;
     const categoriesData = categories.map( c =>({
         name: c
     })) // ? podemos agregar (( name ) => ({ name }))
 
+
     await db.orm.public!.Category!.createAll(categoriesData);
-    
+
     const categoriesDB = await db.orm.public!.Category!.all();
 
     const categoriesMap = categoriesDB.reduce( (map, category) => {
