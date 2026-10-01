@@ -1,7 +1,8 @@
 'use client';
 import { IoCloseOutline, IoSearchOutline, IoPersonOutline, IoTicketOutline, IoLogInOutline, IoLogOutOutline, IoShirtOutline, IoPeopleOutline } from 'react-icons/io5'
-import Link from 'next/link';
 import { useUIStore } from '@/store';
+import { logout } from '@/actions/auth/logout';
+import Link from 'next/link';
 import clsx from 'clsx';
 
 export const Sidebar = () => {
@@ -79,13 +80,13 @@ export const Sidebar = () => {
                 <IoLogInOutline size={ 30 } />
                 <span className='ml-3 text-xl'>Ingresar</span>
             </Link>
-            <Link
-                href='/'
-                className='flex items-center mt-10 p-2 hover:bg-gray-100 rounded transition-all'
+            <button
+                onClick={() => logout()}
+                className='flex w-full items-center mt-10 p-2 hover:bg-gray-100 rounded transition-all cursor-pointer'
             >
                 <IoLogOutOutline size={ 30 } />
                 <span className='ml-3 text-xl'>Salir</span>
-            </Link>
+            </button>
 
             {/* Line Separator */}
             <div className='w-full h-px bg-gray-200 my-10'/>
