@@ -43,7 +43,7 @@ body {
 /* En Tailwind v4, las utilidades personalizadas con @apply se encapsulan dentro de @layer utilities */
 @layer utilities {
   .btn-primary {
-    @apply bg-blue-600 hover:bg-blue-800 text-white py-2 px-4 rounded transition-all;
+    @apply bg-blue-600 hover:bg-blue-800 text-white py-2 px-4 rounded transition-all cursor-pointer;
   }
 
   .btn-secondary {
