@@ -4,25 +4,20 @@ import { useEffect, useActionState } from 'react';
 import { authenticate } from '@/actions';
 import { IoInformationOutline } from "react-icons/io5";
 import clsx from "clsx";
-import { useRouter } from "next/navigation";
-import { useSession } from "next-auth/react";
+
 export const LoginForm = () => {
-    const router = useRouter();
-    const [state, formAction, isPending] = useActionState(
-      authenticate,
-      undefined,
-    );
 
-    const {update} = useSession();
-    useEffect(() => {
-      if(state === 'Success') {
-        update();
-        router.push('/');
-      }
-    }, [state]);
+  const [state, formAction, isPending] = useActionState(
+    authenticate,
+    undefined,
+  );
 
+  useEffect(() => {
+    if(state === 'Success') {
+      window.location.replace('/');
+    }
+  }, [state]);
     
-
   return (
     <form action={ formAction } className="flex flex-col">
         <label htmlFor="email">Correo electrónico</label>
@@ -53,10 +48,10 @@ export const LoginForm = () => {
         </div>
         <button
           type="submit"
-          className={clsx({
+          className={`${clsx({
             "btn-primary": !isPending,
             "btn-disabled": isPending
-          })}
+          })} cursor-pointer`}
           disabled={isPending}
         >
           Ingresar
