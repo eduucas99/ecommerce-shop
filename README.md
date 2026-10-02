@@ -20,7 +20,7 @@ Para guardar un cambio del contrato como una migración y aplicarlo a la base de
 
 ```
 npx prisma contract emit
-npx prisma migration plan --name nombre-del-cambio
+npx prisma migration plan --name nombre_del_cambio
 npx prisma migration status
 npx prisma db migrate --show
 npx prisma db migrate
@@ -29,7 +29,7 @@ npx prisma db migrate
 
 ``` npx prisma contract emit ``` (actualiza TypeScript local)
 
-``` npx prisma migration plan --name mi-cambio ```
+``` npx prisma migration plan --name mi_cambio ```
 
 ```npx prisma db migrate ``` (impacta la base de datos real)
 

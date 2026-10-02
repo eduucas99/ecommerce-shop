@@ -66,6 +66,12 @@ model User {
   images      String?
   createdAt   DateTime      @default(now())
   updatedAt   Timestamp     @default(now())
+}
 
+model Country {
+  id          String        @unique
+  name        String
 
+  createdAt   DateTime      @default(now())
+  updatedAt   Timestamp     @default(now())
 }

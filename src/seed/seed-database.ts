@@ -8,9 +8,10 @@ async function main() {
         await db.orm.public!.ProductImage!.where({}).deleteAll(),
         await db.orm.public!.Product!.where({}).deleteAll(),
         await db.orm.public!.Category!.where({}).deleteAll(),
+        await db.orm.public!.Country!.where({}).deleteAll(),
     ]);
 
-    const {categories, products, users} = initialData;
+    const {categories, products, users, countries} = initialData;
     
     //* Inserto Usuarios 
     await db.orm.public!.User!.createAll(users);
@@ -53,6 +54,14 @@ async function main() {
 
         await db.orm.public!.ProductImage!.createAll(imagesData);
     });
+
+    //* Inserto los paises
+    const insertCountries = countries.map( c => ({
+        id: c.id,
+        name: c.name,
+    }));
+
+    await db.orm.public!.Country!.createAll(insertCountries);
 
     console.log("Seed ejecutado correctamente!");
 }

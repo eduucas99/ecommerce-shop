@@ -8,6 +8,10 @@
       "model": "Category",
       "namespace": "public"
     },
+    "Country": {
+      "model": "Country",
+      "namespace": "public"
+    },
     "Product": {
       "model": "Product",
       "namespace": "public"
@@ -139,6 +143,57 @@
               },
               "namespaceId": "public",
               "table": "Category"
+            }
+          },
+          "Country": {
+            "fields": {
+              "createdAt": {
+                "nullable": false,
+                "type": {
+                  "codecId": "pg/timestamptz-temporal@1",
+                  "kind": "scalar"
+                }
+              },
+              "id": {
+                "nullable": false,
+                "type": {
+                  "codecId": "pg/text@1",
+                  "kind": "scalar"
+                }
+              },
+              "name": {
+                "nullable": false,
+                "type": {
+                  "codecId": "pg/text@1",
+                  "kind": "scalar"
+                }
+              },
+              "updatedAt": {
+                "nullable": false,
+                "type": {
+                  "codecId": "pg/timestamp-temporal@1",
+                  "kind": "scalar"
+                }
+              }
+            },
+            "relations": {},
+            "storage": {
+              "fields": {
+                "createdAt": {
+                  "column": "createdAt"
+                },
+                "id": {
+                  "column": "id"
+                },
+                "name": {
+                  "column": "name"
+                },
+                "updatedAt": {
+                  "column": "updatedAt"
+                }
+              },
+              "namespaceId": "public",
+              "table": "Country"
             }
           },
           "Product": {
@@ -494,6 +549,47 @@
                 }
               ]
             },
+            "Country": {
+              "columns": {
+                "createdAt": {
+                  "codecId": "pg/timestamptz-temporal@1",
+                  "default": {
+                    "expression": "now()",
+                    "kind": "function"
+                  },
+                  "nativeType": "timestamptz",
+                  "nullable": false
+                },
+                "id": {
+                  "codecId": "pg/text@1",
+                  "nativeType": "text",
+                  "nullable": false
+                },
+                "name": {
+                  "codecId": "pg/text@1",
+                  "nativeType": "text",
+                  "nullable": false
+                },
+                "updatedAt": {
+                  "codecId": "pg/timestamp-temporal@1",
+                  "default": {
+                    "expression": "now()",
+                    "kind": "function"
+                  },
+                  "nativeType": "timestamp",
+                  "nullable": false
+                }
+              },
+              "foreignKeys": [],
+              "indexes": [],
+              "uniques": [
+                {
+                  "columns": [
+                    "id"
+                  ]
+                }
+              ]
+            },
             "Product": {
               "checks": [
                 {
@@ -821,7 +917,7 @@
         "kind": "postgres-schema"
       }
     },
-    "storageHash": "03fdac1ef07265cd6108a376b8fdae907c42b4a08f8ba189403a82d6ede2fe0c"
+    "storageHash": "8bb9dd4a3ff20c6abd2fa590aebd717da48e02f329603458de99c307d42da8ed"
   },
   "execution": {
     "executionHash": "c74f914e0e7d8a71cbf723c945ae81342f16d66c347ff2e14eb316284f371acf",
