@@ -3,7 +3,6 @@
 import clsx from 'clsx';
 import { useForm } from 'react-hook-form';
 import { Country } from '@/interfaces';
-import { countries } from '../../../../../seed/seed-countries';
 
 type FormInputs = {
     firstName: string;
