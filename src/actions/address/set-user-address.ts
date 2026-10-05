@@ -5,7 +5,6 @@ import { db } from "@/prisma/db";
 
 export const setUserAddress = async(address: Address, userId: string) => {
     try {
-
         const saveAddress = await createOrReplaceAddress(address, userId);
 
         return {
@@ -37,7 +36,7 @@ const createOrReplaceAddress = async(address: Address, userId: string) => {
             postalCode: address.postalCode
         }
 
-        if( !storedAddress ){
+        if( storedAddress.length === 0 ){
             const newAddress = await db.orm.public.UserAddress.create(addressToSave);
 
             return newAddress;

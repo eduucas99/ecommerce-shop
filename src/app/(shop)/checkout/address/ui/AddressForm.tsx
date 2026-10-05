@@ -5,6 +5,8 @@ import { useForm } from 'react-hook-form';
 import { Country } from '@/interfaces';
 import { useAddressStore } from '@/store';
 import { useEffect } from 'react';
+import { setUserAddress } from '@/actions';
+import { useSession } from 'next-auth/react';
 
 type FormInputs = {
     firstName: string;
@@ -22,7 +24,7 @@ interface Props {
     countries: Country[];
 }
 
-export const AddressForm = ({countries}: Props) => {
+export const AddressForm = ({ countries }: Props) => {
     const { handleSubmit, register, formState: { isValid }, reset } = useForm<FormInputs>({
         defaultValues: {
             //Todo leer de la base de datos
@@ -31,6 +33,10 @@ export const AddressForm = ({countries}: Props) => {
 
     const setAddress = useAddressStore( state => state.setAddress );
     const address = useAddressStore( state => state.address );
+    
+    const { data: session } = useSession({
+        required: true,
+    });
 
     useEffect(() => {
         if ( address.firstName ){
@@ -39,9 +45,17 @@ export const AddressForm = ({countries}: Props) => {
     }, [])
     
     const onSubmit = (data: FormInputs) => {
-        console.log({data});
+        
+        console.log(session!.user.id);
         setAddress(data);
-   }
+
+        if ( data.rememberAddress ){
+            const {rememberAddress, ...address} = data;
+            setUserAddress(address, session!.user.id)
+        } else {
+            //Todo eliminar dirección
+        }
+    }
   return (
     <>
         <form onSubmit={handleSubmit(onSubmit)} className="grid grid-cols-1 gap-2 sm:gap-5 sm:grid-cols-2">
