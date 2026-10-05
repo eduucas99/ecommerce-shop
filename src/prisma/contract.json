@@ -582,13 +582,12 @@
               },
               "foreignKeys": [],
               "indexes": [],
-              "uniques": [
-                {
-                  "columns": [
-                    "id"
-                  ]
-                }
-              ]
+              "primaryKey": {
+                "columns": [
+                  "id"
+                ]
+              },
+              "uniques": []
             },
             "Product": {
               "checks": [
@@ -917,7 +916,7 @@
         "kind": "postgres-schema"
       }
     },
-    "storageHash": "8bb9dd4a3ff20c6abd2fa590aebd717da48e02f329603458de99c307d42da8ed"
+    "storageHash": "05fa4465f5c70985e5d3812eb64c8b006bf3a247dd517edab3559dc8de9c4110"
   },
   "execution": {
     "executionHash": "c74f914e0e7d8a71cbf723c945ae81342f16d66c347ff2e14eb316284f371acf",
