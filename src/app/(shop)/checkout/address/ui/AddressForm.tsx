@@ -5,7 +5,7 @@ import { useForm } from 'react-hook-form';
 import { Country } from '@/interfaces';
 import { useAddressStore } from '@/store';
 import { useEffect } from 'react';
-import { setUserAddress } from '@/actions';
+import { deleteUserAddress, setUserAddress } from '@/actions';
 import { useSession } from 'next-auth/react';
 
 type FormInputs = {
@@ -51,11 +51,12 @@ export const AddressForm = ({ countries }: Props) => {
 
         if ( data.rememberAddress ){
             const {rememberAddress, ...address} = data;
-            setUserAddress(address, session!.user.id)
+            setUserAddress(address, session!.user.id);
         } else {
-            //Todo eliminar dirección
+            deleteUserAddress(session!.user.id);
         }
     }
+    
   return (
     <>
         <form onSubmit={handleSubmit(onSubmit)} className="grid grid-cols-1 gap-2 sm:gap-5 sm:grid-cols-2">
