@@ -33,7 +33,8 @@ const createOrReplaceAddress = async(address: Address, userId: string) => {
             firstName: address.firstName,
             lastName: address.lastName,
             phone: address.phone,
-            postalCode: address.postalCode
+            postalCode: address.postalCode,
+            city: address.city
         }
 
         if( storedAddress.length === 0 ){

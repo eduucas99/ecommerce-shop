@@ -20,21 +20,22 @@ Para guardar un cambio del contrato como una migración y aplicarlo a la base de
 
 ```
 npx prisma contract emit
-npx prisma migration plan --name nombre_del_cambio
-npx prisma migration status
-npx prisma db migrate --show
+npx prisma migration plan --name mi_cambio
+npx prisma migration list
+npx prisma migration show <nombre_del_bundle>
 npx prisma db migrate
+npx prisma migration status
 ```
+
 #### Los comandos que si o si debes ejecutar al realizar cambios:
 
-``` npx prisma contract emit ``` (actualiza TypeScript local)
+`npx prisma contract emit` (actualiza TypeScript local)
 
-``` npx prisma migration plan --name mi_cambio ```
+`npx prisma migration plan --name mi_cambio`
 
-```npx prisma db migrate ``` (impacta la base de datos real)
+`npx prisma db migrate ` (impacta la base de datos real)
 
-
-6. Ejecutar seed `npm run seed` 
+6. Ejecutar seed `npm run seed`
 7. Correr el proyecto `npm run dev`
 
 ## Correr en prod

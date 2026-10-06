@@ -34,7 +34,7 @@ import type {
 } from '@prisma/orm-postgres/contract/types';
 
 export type StorageHash =
-  StorageHashBase<'4faaf559b868870d2041a791cb633246f59ae28b4d0c423a056cfe72d431b85f'>;
+  StorageHashBase<'906e1f3cddb960205c9417d2d80dda3056ec85317ce4bbce131bbd4a5b30b10d'>;
 export type ExecutionHash =
   ExecutionHashBase<'b9efec2b96639cd703c20efb6f9e39fcdead84bc084f840088de8164140cde28'>;
 export type ProfileHash =
@@ -289,6 +289,7 @@ export type FieldOutputTypes = {
     readonly UserAddress: {
       readonly address: CodecTypes['pg/text@1']['output'];
       readonly address2: CodecTypes['pg/text@1']['output'] | null;
+      readonly city: CodecTypes['pg/text@1']['output'];
       readonly countryId: CodecTypes['pg/text@1']['output'];
       readonly firstName: CodecTypes['pg/text@1']['output'];
       readonly id: CodecTypes['pg/text@1']['output'];
@@ -340,6 +341,7 @@ export type FieldInputTypes = {
     readonly UserAddress: {
       readonly address: CodecTypes['pg/text@1']['input'];
       readonly address2: CodecTypes['pg/text@1']['input'] | null;
+      readonly city: CodecTypes['pg/text@1']['input'];
       readonly countryId: CodecTypes['pg/text@1']['input'];
       readonly firstName: CodecTypes['pg/text@1']['input'];
       readonly id: CodecTypes['pg/text@1']['input'];
@@ -391,6 +393,7 @@ export type StorageColumnTypes = {
     readonly UserAddress: {
       readonly address: CodecTypes['pg/text@1']['output'];
       readonly address2: CodecTypes['pg/text@1']['output'] | null;
+      readonly city: CodecTypes['pg/text@1']['output'];
       readonly countryId: CodecTypes['pg/text@1']['output'];
       readonly firstName: CodecTypes['pg/text@1']['output'];
       readonly id: CodecTypes['pg/text@1']['output'];
@@ -442,6 +445,7 @@ export type StorageColumnInputTypes = {
     readonly UserAddress: {
       readonly address: CodecTypes['pg/text@1']['input'];
       readonly address2: CodecTypes['pg/text@1']['input'] | null;
+      readonly city: CodecTypes['pg/text@1']['input'];
       readonly countryId: CodecTypes['pg/text@1']['input'];
       readonly firstName: CodecTypes['pg/text@1']['input'];
       readonly id: CodecTypes['pg/text@1']['input'];
@@ -503,6 +507,7 @@ export namespace Models {
   export type public_UserAddress = {
     address: CodecTypes['pg/text@1']['output'];
     address2: CodecTypes['pg/text@1']['output'] | null;
+    city: CodecTypes['pg/text@1']['output'];
     countryId: CodecTypes['pg/text@1']['output'];
     firstName: CodecTypes['pg/text@1']['output'];
     id: CodecTypes['pg/text@1']['output'];
@@ -790,6 +795,11 @@ type ContractBase = Omit<
                   readonly nativeType: 'text';
                   readonly codecId: 'pg/text@1';
                   readonly nullable: true;
+                };
+                readonly city: {
+                  readonly nativeType: 'text';
+                  readonly codecId: 'pg/text@1';
+                  readonly nullable: false;
                 };
                 readonly countryId: {
                   readonly nativeType: 'text';
@@ -1174,6 +1184,10 @@ type ContractBase = Omit<
                 readonly nullable: true;
                 readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/text@1' };
               };
+              readonly city: {
+                readonly nullable: false;
+                readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/text@1' };
+              };
               readonly countryId: {
                 readonly nullable: false;
                 readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/text@1' };
@@ -1232,6 +1246,7 @@ type ContractBase = Omit<
               readonly fields: {
                 readonly address: { readonly column: 'address' };
                 readonly address2: { readonly column: 'address2' };
+                readonly city: { readonly column: 'city' };
                 readonly countryId: { readonly column: 'countryId' };
                 readonly firstName: { readonly column: 'firstName' };
                 readonly id: { readonly column: 'id' };

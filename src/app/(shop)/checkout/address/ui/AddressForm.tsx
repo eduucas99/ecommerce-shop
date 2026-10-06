@@ -1,12 +1,13 @@
 
 'use client';
-import clsx from 'clsx';
+import { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
-import { Country } from '@/interfaces';
-import { useAddressStore } from '@/store';
-import { useEffect } from 'react';
-import { deleteUserAddress, setUserAddress } from '@/actions';
 import { useSession } from 'next-auth/react';
+import { Address, Country } from '@/interfaces';
+import { useAddressStore } from '@/store';
+import { deleteUserAddress, setUserAddress } from '@/actions';
+import clsx from 'clsx';
+import { useRouter } from 'next/navigation';
 
 type FormInputs = {
     firstName: string;
@@ -22,18 +23,24 @@ type FormInputs = {
 
 interface Props {
     countries: Country[];
+    userStoredAddress?: Partial<Address>;
 }
 
-export const AddressForm = ({ countries }: Props) => {
+export const AddressForm = ({ countries, userStoredAddress = {} }: Props) => {
+    
+    const [loading, setLoading] = useState(false);
+    const router = useRouter();
+    
     const { handleSubmit, register, formState: { isValid }, reset } = useForm<FormInputs>({
         defaultValues: {
-            //Todo leer de la base de datos
+            ...(userStoredAddress as any),
+            rememberAddress: false,
         }
     });
 
     const setAddress = useAddressStore( state => state.setAddress );
     const address = useAddressStore( state => state.address );
-    
+
     const { data: session } = useSession({
         required: true,
     });
@@ -44,27 +51,42 @@ export const AddressForm = ({ countries }: Props) => {
         }
     }, [])
     
-    const onSubmit = (data: FormInputs) => {
-        
-        console.log(session!.user.id);
-        setAddress(data);
+    const onSubmit = async(data: FormInputs) => {
+        setLoading(true);
+        try {
+            setAddress(data);
+            const { rememberAddress, ...address } = data;
 
-        if ( data.rememberAddress ){
-            const {rememberAddress, ...address} = data;
-            setUserAddress(address, session!.user.id);
-        } else {
-            deleteUserAddress(session!.user.id);
+            if (data.rememberAddress) {
+                await setUserAddress(address, session!.user.id);
+            } else {
+                await deleteUserAddress(session!.user.id);
+            }
+            router.push('/checkout');
+        } finally {
+            setLoading(false);
         }
     }
     
   return (
     <>
+        {
+            loading && (
+                <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40">
+                    <div
+                        className="h-12 w-12 animate-spin rounded-full border-4 border-gray-200 border-t-blue-600"
+                        role="status"
+                        aria-label="Cargando"
+                    />
+                </div>
+            )
+        }
         <form onSubmit={handleSubmit(onSubmit)} className="grid grid-cols-1 gap-2 sm:gap-5 sm:grid-cols-2">
             <div className="flex flex-col mb-2">
                 <span>Nombres</span>
                 <input 
                 type="text" 
-                className="p-2 border rounded-md bg-gray-200 focus:border-blue-600 focus:outline-2 focus:outline-blue-600" { ...register('firstName', { required: true }) }
+                className="p-2 border rounded-md bg-white focus:border-blue-600 focus:outline-2 focus:outline-blue-600" { ...register('firstName', { required: true }) }
                 />
             </div>
 
@@ -72,7 +94,7 @@ export const AddressForm = ({ countries }: Props) => {
                 <span>Apellidos</span>
                 <input 
                 type="text" 
-                className="p-2 border rounded-md bg-gray-200 focus:border-blue-600 focus:outline-2 focus:outline-blue-600" { ...register('lastName', { required: true }) }
+                className="p-2 border rounded-md bg-white focus:border-blue-600 focus:outline-2 focus:outline-blue-600" { ...register('lastName', { required: true }) }
                 />
             </div>
 
@@ -80,7 +102,7 @@ export const AddressForm = ({ countries }: Props) => {
                 <span>Dirección</span>
                 <input 
                 type="text" 
-                className="p-2 border rounded-md bg-gray-200 focus:border-blue-600 focus:outline-2 focus:outline-blue-600" { ...register('address', { required: true }) }
+                className="p-2 border rounded-md bg-white focus:border-blue-600 focus:outline-2 focus:outline-blue-600" { ...register('address', { required: true }) }
                 />
             </div>
 
@@ -88,7 +110,7 @@ export const AddressForm = ({ countries }: Props) => {
                 <span>Dirección 2 (opcional)</span>
                 <input 
                 type="text" 
-                className="p-2 border rounded-md bg-gray-200 focus:border-blue-600 focus:outline-2 focus:outline-blue-600" { ...register('address2') }
+                className="p-2 border rounded-md bg-white focus:border-blue-600 focus:outline-2 focus:outline-blue-600" { ...register('address2') }
                 />
             </div>
 
@@ -97,7 +119,7 @@ export const AddressForm = ({ countries }: Props) => {
                 <span>Código postal</span>
                 <input 
                 type="text" 
-                className="p-2 border rounded-md bg-gray-200 focus:border-blue-600 focus:outline-2 focus:outline-blue-600" { ...register('postalCode', { required: true }) }
+                className="p-2 border rounded-md bg-white focus:border-blue-600 focus:outline-2 focus:outline-blue-600" { ...register('postalCode', { required: true }) }
                 />
             </div>
 
@@ -105,14 +127,14 @@ export const AddressForm = ({ countries }: Props) => {
                 <span>Ciudad</span>
                 <input 
                 type="text" 
-                className="p-2 border rounded-md bg-gray-200 focus:border-blue-600 focus:outline-2 focus:outline-blue-600" { ...register('city', { required: true }) }
+                className="p-2 border rounded-md bg-white focus:border-blue-600 focus:outline-2 focus:outline-blue-600" { ...register('city', { required: true }) }
                 />
             </div>
 
             <div className="flex flex-col mb-2">
                 <span>País</span>
                 <select 
-                className="p-2 border rounded-md bg-gray-200 focus:border-blue-600 focus:outline-2 focus:outline-blue-600" { ...register('country', { required: true }) }
+                className="p-2 border rounded-md bg-white focus:border-blue-600 focus:outline-2 focus:outline-blue-600" { ...register('country', { required: true }) }
                 >
                     <option value="">[ Seleccione ]</option>
                     {
@@ -127,7 +149,7 @@ export const AddressForm = ({ countries }: Props) => {
                 <span>Teléfono</span>
                 <input 
                 type="text" 
-                className="p-2 border rounded-md bg-gray-200 focus:border-blue-600 focus:outline-2 focus:outline-blue-600" { ...register('phone', { required: true }) }
+                className="p-2 border rounded-md bg-white focus:border-blue-600 focus:outline-2 focus:outline-blue-600" { ...register('phone', { required: true }) }
                 />
             </div>
 

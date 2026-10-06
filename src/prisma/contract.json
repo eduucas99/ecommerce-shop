@@ -529,6 +529,13 @@
                   "kind": "scalar"
                 }
               },
+              "city": {
+                "nullable": false,
+                "type": {
+                  "codecId": "pg/text@1",
+                  "kind": "scalar"
+                }
+              },
               "countryId": {
                 "nullable": false,
                 "type": {
@@ -620,6 +627,9 @@
                 },
                 "address2": {
                   "column": "address2"
+                },
+                "city": {
+                  "column": "city"
                 },
                 "countryId": {
                   "column": "countryId"
@@ -1009,6 +1019,11 @@
                   "nativeType": "text",
                   "nullable": true
                 },
+                "city": {
+                  "codecId": "pg/text@1",
+                  "nativeType": "text",
+                  "nullable": false
+                },
                 "countryId": {
                   "codecId": "pg/text@1",
                   "nativeType": "text",
@@ -1138,7 +1153,7 @@
         "kind": "postgres-schema"
       }
     },
-    "storageHash": "4faaf559b868870d2041a791cb633246f59ae28b4d0c423a056cfe72d431b85f"
+    "storageHash": "906e1f3cddb960205c9417d2d80dda3056ec85317ce4bbce131bbd4a5b30b10d"
   },
   "execution": {
     "executionHash": "b9efec2b96639cd703c20efb6f9e39fcdead84bc084f840088de8164140cde28",
