@@ -3,6 +3,7 @@
 import { auth } from "@/auth.config";
 import { Address, Size } from "@/interfaces";
 import { db } from "@/prisma/db";
+import { create } from 'zustand';
 
 interface ProductToOrder {
     productId: string;
@@ -49,12 +50,24 @@ export const placeOrder = async( productIds: ProductToOrder[], address: Address 
     }, { subTotal: 0, tax: 0, total: 0 })
 
     // Crear la transacción de la base de datos
-    const prismaTx = db.transaction( async(tx)=>{
+    const prismaTx = await db.transaction( async(tx)=>{
         // 1. Actualizar stock de los productos
         
 
         // 2. Crear la orden - Encabezado - Detalle
-        
+        // const order = await tx.orm.public.Order.create({
+        //     userId: userId,
+        //     itemsInOrder: itemsInOrder,
+        //     subTotal: subTotal,
+        //     tax: tax,
+        //     total: total,
+            
+        //     OrderItem: {
+        //         createMany: {
+        //             data: []
+        //         }
+        //     }
+        // })
 
         // 3. Crear la dirección de la orden
 

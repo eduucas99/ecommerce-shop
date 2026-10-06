@@ -1220,6 +1220,10 @@
                 },
                 "isPaid": {
                   "codecId": "pg/bool@1",
+                  "default": {
+                    "kind": "literal",
+                    "value": false
+                  },
                   "nativeType": "bool",
                   "nullable": false
                 },
@@ -1950,7 +1954,7 @@
         "kind": "postgres-schema"
       }
     },
-    "storageHash": "2a25e866495110889e70cf4fec62ff4f6d21f2f034c6c8a8e4454750ff47f8d3"
+    "storageHash": "e160e579413d16f5d2574375d92f4607b293d0d6b6bdc038691570a253f9510e"
   },
   "execution": {
     "executionHash": "74fdc1b32a5f60b7c6e4e6e815b486587e95116ea3fc64a252d1ca4b796bc857",
