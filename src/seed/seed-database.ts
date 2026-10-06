@@ -4,11 +4,17 @@ import { db } from "../prisma/db.ts";
 async function main() {
     //! Borrar registros previos
     await Promise.all([
+        await db.orm.public!.OrderAddress!.where({}).deleteAll(),
+        await db.orm.public!.OrderItem!.where({}).deleteAll(),
+        await db.orm.public!.Order!.where({}).deleteAll(),
+
+        await db.orm.public!.UserAddress!.where({}).deleteAll(),
         await db.orm.public!.User!.where({}).deleteAll(),
+        await db.orm.public!.Country!.where({}).deleteAll(),
+
         await db.orm.public!.ProductImage!.where({}).deleteAll(),
         await db.orm.public!.Product!.where({}).deleteAll(),
         await db.orm.public!.Category!.where({}).deleteAll(),
-        await db.orm.public!.Country!.where({}).deleteAll(),
     ]);
 
     const {categories, products, users, countries} = initialData;
