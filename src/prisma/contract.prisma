@@ -30,20 +30,21 @@ model Category {
 }
 
 model Product {
-  id          String        @id @default(uuid())
-  title       String
-  description String?
-  inStock     Int
-  price       Float         @default(0)
-  slug        String        @unique
-  sizes       Size[]        
-  tags        String[]      @default([])
-  gender      Gender
+  id            String        @id @default(uuid())
+  title         String
+  description   String?
+  inStock       Int
+  price         Float         @default(0)
+  slug          String        @unique
+  sizes         Size[]        
+  tags          String[]      @default([])
+  gender        Gender
   
   //Relaciones
-  category    Category      @relation(fields: [categoryId], references: [id])
-  categoryId  String
-  ProductImage ProductImage[]
+  category      Category      @relation(fields: [categoryId], references: [id])
+  categoryId    String
+  ProductImage  ProductImage[]
+  OrderItem     OrderItem[]
 
   @@index([gender])
 }
@@ -68,11 +69,15 @@ model User {
   updatedAt   Timestamp     @default(now())
 
   address     UserAddress?
+  Order       Order[]
 }
 
 model Country {
-  id          String        @id
-  name        String
+  id            String        @id
+  name          String
+  
+  UserAddress   UserAddress[]
+  OrderAddress  OrderAddress[]?
 }
 
 model UserAddress {
@@ -85,9 +90,57 @@ model UserAddress {
   phone       String
   city        String
 
-  country Country @relation(fields: [countryId], references: [id])
-  countryId String
+  country     Country @relation(fields: [countryId], references: [id])
+  countryId   String
 
-  user User @relation(fields: [userId], references: [id])
-  userId  String  @unique
+  user        User @relation(fields: [userId], references: [id])
+  userId      String  @unique
+}
+
+model Order {
+  id            String @id @default(uuid())
+  subTotal      Float
+  tax           Float
+  total         Float
+  itemsInOrder  Int
+  isPaid        Boolean
+  paidAt        DateTime?
+  createdAt     DateTime?     @default(now())
+  updatedAt     Timestamp     @default(now())
+
+  user          User @relation( fields: [userId], references: [id])
+  userId        String
+
+  OrderItem     OrderItem[]
+  OrderAddress  OrderAddress?
+}
+
+model OrderItem {
+  id          String    @id @default(uuid())
+  quantity    Int
+  price       Float
+  size        Size
+
+  order       Order @relation( fields: [orderId], references: [id])
+  orderId     String
+
+  product     Product @relation( fields: [productId], references: [id])
+  productId   String
+}
+
+model OrderAddress {
+  id            String    @id @default(uuid())
+  firstName     String
+  lastName      String
+  address       String
+  address2      String?
+  postalCode    String
+  city          String
+  phone         String
+
+  country       Country @relation( fields: [countryId], references: [id])
+  countryId     String
+
+  Order         Order   @relation( fields: [orderId], references: [id])
+  orderId       String  @unique
 }

@@ -26,15 +26,6 @@ npx prisma migration show <nombre_del_bundle>
 npx prisma db migrate
 npx prisma migration status
 ```
-
-#### Los comandos que si o si debes ejecutar al realizar cambios:
-
-`npx prisma contract emit` (actualiza TypeScript local)
-
-`npx prisma migration plan --name mi_cambio`
-
-`npx prisma db migrate ` (impacta la base de datos real)
-
 6. Ejecutar seed `npm run seed`
 7. Correr el proyecto `npm run dev`
 
