@@ -6,10 +6,9 @@ import { useCartStore } from "@/store";
 import { useShallow } from "zustand/react/shallow";
 import { LoadingOverlay } from "@/components";
 import { currencyFormat, sleep } from "@/utils";
-import { getCountries } from '@/actions';
+import { placeOrder, getCountries } from '@/actions';
 import type { Country } from '@/interfaces';
 import clsx from "clsx";
-
 
 export const PlaceOrder = () => {
 
@@ -39,8 +38,9 @@ export const PlaceOrder = () => {
             quantity: p.quantity,
             size: p.size,
         }))
-        console.log({productsToOrder})
 
+        const resp = await placeOrder(productsToOrder, address);
+        console.log("resp: ",resp)
         setIsPlacingOrder(false);
     }
     
