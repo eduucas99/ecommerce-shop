@@ -11,7 +11,6 @@ interface State {
         city: string;
         country: string;
         phone: string; 
-        rememberAddress: boolean; 
     }
 
     setAddress: (address: State['address']) => void;

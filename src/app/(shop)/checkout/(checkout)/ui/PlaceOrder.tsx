@@ -5,18 +5,21 @@ import { useAddressStore } from "@/store";
 import { useCartStore } from "@/store";
 import { useShallow } from "zustand/react/shallow";
 import { LoadingOverlay } from "@/components";
-import { currencyFormat } from "@/utils";
+import { currencyFormat, sleep } from "@/utils";
 import { getCountries } from '@/actions';
 import type { Country } from '@/interfaces';
+import clsx from "clsx";
 
 
 export const PlaceOrder = () => {
 
     const [loaded, setLoaded] = useState(false);
+    const [isPlacingOrder, setIsPlacingOrder] = useState(false);
     const {subTotal, tax, total, itemsInCart } = useCartStore(useShallow(state => state.getSummaryInformation()));
     const [countries, setCountries] = useState<Country[]>([]);
 
     const address = useAddressStore( state => state.address );
+    const cart = useCartStore( state => state.cart );
 
     useEffect(() => {
         const loadCountries = async () => {
@@ -26,6 +29,21 @@ export const PlaceOrder = () => {
 
         void loadCountries();
     }, []);
+
+    const onPlaceOrder = async() => {
+        setIsPlacingOrder(true);
+        // await sleep(2);
+
+        const productsToOrder = cart.map( p => ({
+            productId: p.id,
+            quantity: p.quantity,
+            size: p.size,
+        }))
+        console.log({productsToOrder})
+
+        setIsPlacingOrder(false);
+    }
+    
     const countryName =
         countries.find(country => country.id === address.country)?.name
         ?? address.country;
@@ -66,14 +84,22 @@ export const PlaceOrder = () => {
             </div>
 
             <div className="mt-5 mb-2 w-full">
-              <p className="mb-5">
-                {/* Disclaimer */}
-                <span className="text-xs">
-                  Al hacer clic en "Colocar orden", aceptas nuestros <a href="#" className="underline">términos y condiciones</a> y <a href="#" className="underline">política de privacidad.</a>
-                </span>
-              </p>
+                <p className="mb-5">
+                    {/* Disclaimer */}
+                    <span className="text-xs">
+                    Al hacer clic en "Colocar orden", aceptas nuestros <a href="#" className="underline">términos y condiciones</a> y <a href="#" className="underline">política de privacidad.</a>
+                    </span>
+                </p>
+              {/* <p className="text-red-500">Error de creación</p> */}
                 <button
-                    className="flex flex-col btn-primary justify-center" 
+                    onClick={onPlaceOrder}
+                    className={
+                        clsx({
+                                'btn-primary': !isPlacingOrder,
+                                'btn-disabled': isPlacingOrder
+                            }
+                        )
+                    }
                     // href="/orders/123"
                 >
                     Colocar Orden
