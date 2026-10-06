@@ -1,18 +1,14 @@
 'use client';
 
 import { useCartStore } from "@/store";
-import { LoadingOverlay, QuantitySelector } from "@/components";
 import { useEffect, useState } from "react";
 import Image from "next/image";
-import Link from "next/link";
-import { IoTrashOutline } from "react-icons/io5";
 import { currencyFormat } from '@/utils/currencyFormat';
 import { redirect } from "next/navigation";
+import { LoadingOverlay } from "@/components";
 
 
 export const ProductsInCart = () => {
-    const updateProductQuantity = useCartStore( state => state.updateProductQuantity );
-    const removeProduct = useCartStore( state => state.removeProduct );
     const [loaded, setLoaded] = useState(false);
     const productsInCart = useCartStore( state => state.cart );
     
@@ -45,30 +41,19 @@ export const ProductsInCart = () => {
                             className="mr-5 rounded"
                         />
                         <div>
-                            <Link
-                                className="font-semibold text-gray-900 hover:underline cursor-pointer" 
-                                href={`/product/${product.slug}`}>
+                            <span>
                                 <p>{product.title}</p>
-                            </Link>
+                            </span>
                             <p className="mt-1">Talle:
                                 <span className="font-bold text-gray-700 ml-1">
-                                    {product.size}
+                                    {product.size} - {product.quantity}
                                 </span>
                             </p>
                             <p className="mt-1">
                                 <span className="font-bold">
-                                    {currencyFormat(product.price)}
+                                    {currencyFormat(product.price * product.quantity)}
                                 </span>
                             </p>
-                            <div className="flex gap-2">
-                                <QuantitySelector quantity={product.quantity} onQuantityChanged={ quantity => updateProductQuantity(product, quantity) }/>
-                                
-                                <button 
-                                    onClick={() => removeProduct(product)}
-                                    className="hover:bg-red-200 rounded-md cursor-pointer px-2">
-                                    <IoTrashOutline size={20}/>
-                                </button>
-                            </div>
                         </div>
                     </div>
                 ))

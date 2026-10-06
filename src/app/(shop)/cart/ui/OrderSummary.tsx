@@ -4,6 +4,7 @@ import Link from "next/link";
 import { useEffect, useState } from "react";
 import { useShallow } from "zustand/react/shallow";
 import { currencyFormat } from '@/utils/currencyFormat';
+import { LoadingOverlay } from "@/components";
 
 export const OrderSummary = () => {
 
@@ -14,7 +15,7 @@ export const OrderSummary = () => {
         setLoaded(true)
     }, [])
     
-    if( !loaded ) return <p>Loading...</p>;
+    if( !loaded ) return <LoadingOverlay />;
 
   return (
     <div className="h-fit w-full self-start rounded-xl bg-white p-7 shadow-xl max-[961px]:col-span-full">

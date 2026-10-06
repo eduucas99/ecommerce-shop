@@ -3,11 +3,13 @@
 import { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { useSession } from 'next-auth/react';
-import { Address, Country } from '@/interfaces';
-import { useAddressStore } from '@/store';
-import { deleteUserAddress, setUserAddress } from '@/actions';
-import clsx from 'clsx';
 import { useRouter } from 'next/navigation';
+
+import { Address, Country } from '@/interfaces';
+import { deleteUserAddress, setUserAddress } from '@/actions';
+import { LoadingOverlay } from '@/components';
+import { useAddressStore } from '@/store';
+import clsx from 'clsx';
 
 type FormInputs = {
     firstName: string;
@@ -72,13 +74,7 @@ export const AddressForm = ({ countries, userStoredAddress = {} }: Props) => {
     <>
         {
             loading && (
-                <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40">
-                    <div
-                        className="h-12 w-12 animate-spin rounded-full border-4 border-gray-200 border-t-blue-600"
-                        role="status"
-                        aria-label="Cargando"
-                    />
-                </div>
+                <LoadingOverlay />
             )
         }
         <form onSubmit={handleSubmit(onSubmit)} className="grid grid-cols-1 gap-2 sm:gap-5 sm:grid-cols-2">

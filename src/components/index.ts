@@ -12,5 +12,6 @@ export * from './ui/title/Title';
 export * from './ui/sidebar/Sidebar';
 export * from './ui/pagination/Pagination';
 export * from './ui/footer/Footer';
+export * from './ui/loading/LoadingOverlay';
 
 export * from './provider/Provider';
