@@ -55,24 +55,32 @@ export const placeOrder = async( productIds: ProductToOrder[], address: Address 
         
 
         // 2. Crear la orden - Encabezado - Detalle
-        // const order = await tx.orm.public.Order.create({
-        //     userId: userId,
-        //     itemsInOrder: itemsInOrder,
-        //     subTotal: subTotal,
-        //     tax: tax,
-        //     total: total,
-            
-        //     OrderItem: {
-        //         createMany: {
-        //             data: []
-        //         }
-        //     }
-        // })
+        const order = await tx.orm.public.Order.create({
+            userId,
+            itemsInOrder,
+            subTotal,
+            tax,
+            total,
 
+            OrderItem: (items) =>
+                items.create(
+                productIds.map((item) => {
+                    const product = products.find((p) => p.id === item.productId);
+                    if (!product) throw new Error(`Producto ${item.productId} no existe`);
+                    return {
+                    quantity: item.quantity,
+                    size: item.size,
+                    productId: item.productId,
+                    price: product.price,
+                    };
+                })
+            ),
+        });
+        
         // 3. Crear la dirección de la orden
 
         return {
-            orden: 123,
+            orden: order,
             updateProducts: [],
             orderAddress:[]
         }
