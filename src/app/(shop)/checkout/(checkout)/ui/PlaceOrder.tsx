@@ -9,16 +9,20 @@ import { currencyFormat, sleep } from "@/utils";
 import { placeOrder, getCountries } from '@/actions';
 import type { Country } from '@/interfaces';
 import clsx from "clsx";
+import { useRouter } from "next/navigation";
 
 export const PlaceOrder = () => {
 
+    const [errorMessage, setErrorMessage] = useState("");
     const [loaded, setLoaded] = useState(false);
     const [isPlacingOrder, setIsPlacingOrder] = useState(false);
     const {subTotal, tax, total, itemsInCart } = useCartStore(useShallow(state => state.getSummaryInformation()));
     const [countries, setCountries] = useState<Country[]>([]);
 
+    const router = useRouter();
     const address = useAddressStore( state => state.address );
     const cart = useCartStore( state => state.cart );
+    const clearCart = useCartStore( state => state.clearCart );
 
     useEffect(() => {
         const loadCountries = async () => {
@@ -39,9 +43,16 @@ export const PlaceOrder = () => {
             size: p.size,
         }))
 
-        console.log("resp: ",address)
         const resp = await placeOrder(productsToOrder, address);
-        setIsPlacingOrder(false);
+        if ( !resp.ok){
+            setIsPlacingOrder(false);
+            setErrorMessage(resp.message);
+            return;
+        }
+        
+        //* Si todo salio bien
+        clearCart();
+        router.replace('/orders/' + resp.orderId);
     }
     
     const countryName =
@@ -90,7 +101,9 @@ export const PlaceOrder = () => {
                     Al hacer clic en "Colocar orden", aceptas nuestros <a href="#" className="underline">términos y condiciones</a> y <a href="#" className="underline">política de privacidad.</a>
                     </span>
                 </p>
-              {/* <p className="text-red-500">Error de creación</p> */}
+
+                <p className="text-red-500">{ errorMessage }</p>
+                
                 <button
                     onClick={onPlaceOrder}
                     className={

@@ -3,7 +3,6 @@
 import { auth } from "@/auth.config";
 import { Address, Size } from "@/interfaces";
 import { db } from "@/prisma/db";
-import { create } from 'zustand';
 
 interface ProductToOrder {
     productId: string;
@@ -49,49 +48,81 @@ export const placeOrder = async( productIds: ProductToOrder[], address: Address 
         return totals;
     }, { subTotal: 0, tax: 0, total: 0 })
 
-    // Crear la transacción de la base de datos
-    const prismaTx = await db.transaction( async(tx)=>{
-        // 1. Actualizar stock de los productos
-        
-
-        // 2. Crear la orden - Encabezado - Detalle
-        const order = await tx.orm.public.Order.create({
-            userId,
-            itemsInOrder,
-            subTotal,
-            tax,
-            total,
-
-            OrderItem: (items) =>
-                items.create(
-                productIds.map((item) => {
-                    const product = products.find((p) => p.id === item.productId);
-                    if (!product) throw new Error(`Producto ${item.productId} no existe`);
-                    return {
-                    quantity: item.quantity,
-                    size: item.size,
-                    productId: item.productId,
-                    price: product.price,
-                    };
+    try {
+        const prismaTx = await db.transaction( async(tx)=>{
+            // 1. Actualizar stock de los productos
+            const updatedProductsPromises = products.map( ( product ) => {
+                // Acumular los valores
+                const productQuantity = productIds.filter(
+                    p => p.productId === product.id
+                ).reduce( (acc, item) => item.quantity + acc, 0 );
+                
+                if ( productQuantity === 0 ) throw new Error(`${ product.id } no tiene cantidad definida.`);
+                
+                return tx.orm.public.Product.where({ id: product.id }).update({
+                    inStock: product.inStock - productQuantity
                 })
-            ),
-        });
-        
-        // 3. Crear la dirección de la orden
-        const { country: _country, userId:_userId, ...addressOrder } = address;
-        
-        const orderAddress = await tx.orm.public.OrderAddress.create({
-            ...addressOrder,
-            countryId: _country,
-            orderId: order.id,
+            });
+
+            const updateProducts = await Promise.all( updatedProductsPromises );
+            
+            // Verificar valores negativos en las existencias = no hay stock
+            updateProducts.forEach( product => {
+                if (product && product.inStock != null && product.inStock < 0 ){
+                    throw new Error (`${ product.title } no tiene mas stock.`)
+                }
+            })
+            // 2. Crear la orden - Encabezado - Detalle
+            const order = await tx.orm.public.Order.create({
+                userId,
+                itemsInOrder,
+                subTotal,
+                tax,
+                total,
+
+                OrderItem: (items) =>
+                    items.create(
+                    productIds.map((item) => {
+                        const product = products.find((p) => p.id === item.productId);
+                        if (!product) throw new Error(`Producto ${item.productId} no existe`);
+                        return {
+                        quantity: item.quantity,
+                        size: item.size,
+                        productId: item.productId,
+                        price: product.price,
+                        };
+                    })
+                ),
+            });
+            
+            // 3. Crear la dirección de la orden
+            const { country: _country, userId: _userId, ...addressOrder } = address;
+
+            const orderAddress = await tx.orm.public.OrderAddress.create({
+                ...addressOrder,
+                countryId: _country,
+                orderId: order.id,
+            });
+
+            return {
+                order: order,
+                updateProducts: updateProducts,
+                orderAddress:orderAddress
+            }
         });
 
-        return {
-            orden: order,
-            updateProducts: [],
-            orderAddress:orderAddress
+        return { 
+            ok: true,
+            orderId: prismaTx.order.id
         }
-    });
+    } catch (error: any) {
+        return {
+            ok: false,
+            message: error?.message,
+        }
+    }
+    // Crear la transacción de la base de datos
+   
     return{
         productIds, address, userId
     }
