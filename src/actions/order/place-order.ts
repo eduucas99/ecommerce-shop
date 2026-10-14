@@ -78,11 +78,18 @@ export const placeOrder = async( productIds: ProductToOrder[], address: Address 
         });
         
         // 3. Crear la dirección de la orden
+        const { country: _country, userId:_userId, ...addressOrder } = address;
+        
+        const orderAddress = await tx.orm.public.OrderAddress.create({
+            ...addressOrder,
+            countryId: _country,
+            orderId: order.id,
+        });
 
         return {
             orden: order,
             updateProducts: [],
-            orderAddress:[]
+            orderAddress:orderAddress
         }
     });
     return{
