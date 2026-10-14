@@ -1,30 +1,33 @@
 import { Title } from "@/components";
-import { initialData } from "@/seed/seed";
 import Link from "next/link";
 import Image from "next/image";
 import clsx from "clsx";
 import { IoCardOutline } from 'react-icons/io5';
 import { currencyFormat } from '../../../../utils/currencyFormat';
+import { getOrderById } from "@/actions";
+import { redirect } from "next/navigation";
 
-const productsInCart = [
-  initialData.products[0],
-  initialData.products[1],
-  initialData.products[2],
-];
 interface Props {
   params:{
     id: string;
   }
 }
+
 export default async function OrdersByIdPage({params}: Props) {
   const {id} = await params;
-  //Todo: verificar
-  //redirect(/)
+  const {ok, order} = await getOrderById(id);
+
+  if( !ok ){
+    redirect('/');
+  }
+
+  const orderAddress = order?.OrderAddress;
+  const orderItem = order?.OrderItem;
+
   return (
     <div className="flex justify-center items-center mb-72 px-10 sm:px-0">
-      
       <div className="flex flex-col w-250">
-        <Title title={`Orden #${id}`}/>
+        <Title title={`Orden #${id.split('-').at(-1)}`}/>
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-10">
           {/* Carrito */}
           <div className="flex flex-col mt-5">
@@ -32,34 +35,35 @@ export default async function OrdersByIdPage({params}: Props) {
               clsx(
                 "flex items-center rounded-lg py-2 px-3.5 text-xs font-bold text-white mb-5",
                 {
-                  'bg-red-500': false,
-                  'bg-green-700': true,
+                  'bg-red-500': !order?.isPaid,
+                  'bg-green-700': order?.isPaid,
                 }
               )
             }>
               <IoCardOutline size={30}/>
-              {/* <span className="mx-2">Pendiente de pago</span> */}
-              <span className="mx-2">Orden Pagada</span>
+              <span className="mx-2">
+                {order?.isPaid ? "Orden Pagada" : "Pendiente de pago"}
+              </span>
             </div>
             {/* Items */}
             {
-              productsInCart.map(product => (
-                <div key={product.slug} className="flex mb-5">
+              orderItem?.map( order => (
+                <div key={order?.product?.slug + "-"+ order?.size} className="flex mb-5">
                   <Image
-                    src={`/products/${product.images[0]}`}
+                    src={`/products/${order?.product?.ProductImage[0].url}`}
                     width={100}
                     height={100}
                     style={{
                       width: '100px',
                       height: '110px',
                     }}
-                    alt={product.title}
+                    alt={order?.product?.title ?? ""}
                     className="mr-5 rounded"
                   />
                   <div className="mt-4">
-                    <p>{product.title}</p>
-                    <p>{currencyFormat(product.price)} x 3</p>
-                    <p className="font-bold">Subtotal: {currencyFormat(product.price)}</p>
+                    <Link className="font-medium hover:cursor-pointer hover:underline" href={`/product/${order?.product?.slug}` }>{ order?.product?.title }</Link>
+                    <p>{ currencyFormat(order?.product?.price ?? 0) } x { order?.quantity }</p>
+                    <p className="font-bold">Subtotal: { currencyFormat(Number((order?.product?.price ?? 0) * order?.quantity)) }</p>
                   </div>
                 </div>
               ))
@@ -70,11 +74,11 @@ export default async function OrdersByIdPage({params}: Props) {
           <div className="bg-white rounded-xl shadow-xl p-7">
             <h2 className="text-2xl font-bold mb-2">Dirección de entrega</h2>
             <div className="mb-10">
-              <p className="text-xl">Eduardo Castañeira</p>
-              <p>Av. Aristobulo del Valle</p>
-              <p>Santa Fe</p>
-              <p>Santa Fe</p>
-              <p>CP: 3004</p>
+              <p className="text-xl">{ orderAddress?.firstName } { orderAddress?.lastName }</p>
+              <p>{ orderAddress?.address }</p>
+              <p>{ orderAddress?.city }</p>
+              <p>{ orderAddress?.city } { orderAddress?.countryId }</p>
+              <p>CP: { orderAddress?.postalCode }</p>
             </div>
 
             {/* Divider */}
@@ -83,16 +87,16 @@ export default async function OrdersByIdPage({params}: Props) {
             
             <div className="grid grid-cols-2">
               <span>N° Productos</span>
-              <span className="text-right">3 Artículos</span>
+              <span className="text-right">{ order?.itemsInOrder } Artículos</span>
               
               <span>Subtotal</span>
-              <span className="text-right">$ 100.000</span>
+              <span className="text-right">{ currencyFormat(Number(order?.subTotal)) }</span>
               
               <span>Impuestos (%15)</span>
-              <span className="text-right">$ 18.000</span>
+              <span className="text-right">{ currencyFormat(Number(order?.tax)) }</span>
               
               <span className="text-2xl mt-5">Total</span>
-              <span className="text-2xl mt-5 text-right">$ 118.000</span>
+              <span className="text-2xl mt-5 text-right">{ currencyFormat(Number(order?.total)) }</span>
             </div>
 
             <div className="mt-5 mb-2 w-full">
@@ -100,14 +104,15 @@ export default async function OrdersByIdPage({params}: Props) {
                 clsx(
                   "flex items-center rounded-lg py-2 px-3.5 text-xs font-bold text-white mb-5",
                   {
-                    'bg-red-500': false,
-                    'bg-green-700': true,
+                    'bg-red-500': !order?.isPaid,
+                    'bg-green-700': order?.isPaid,
                   }
                 )
               }>
                 <IoCardOutline size={30}/>
-                {/* <span className="mx-2">Pendiente de pago</span> */}
-                <span className="mx-2">Orden Pagada</span>
+                <span className="mx-2">
+                  {order?.isPaid ? "Orden Pagada" : "Pendiente de pago"}
+                </span>
               </div>
             </div>
           </div>
