@@ -1,0 +1,44 @@
+[
+  {
+    "id": "column.public.Order.transactionId",
+    "label": "Add column \"transactionId\" to \"Order\"",
+    "operationClass": "additive",
+    "target": {
+      "id": "postgres",
+      "details": {
+        "schema": "public",
+        "objectType": "column",
+        "name": "transactionId",
+        "table": "Order"
+      }
+    },
+    "precheck": [
+      {
+        "description": "ensure column \"transactionId\" is missing",
+        "sql": "SELECT NOT EXISTS (SELECT 1 AS \"one\" FROM \"information_schema\".\"columns\" WHERE (\"table_schema\" = $1 AND \"table_name\" = $2 AND \"column_name\" = $3)) AS \"result\"",
+        "params": [
+          "public",
+          "Order",
+          "transactionId"
+        ]
+      }
+    ],
+    "execute": [
+      {
+        "description": "add column \"transactionId\"",
+        "sql": "ALTER TABLE \"public\".\"Order\" ADD COLUMN \"transactionId\" text"
+      }
+    ],
+    "postcheck": [
+      {
+        "description": "verify column \"transactionId\" exists",
+        "sql": "SELECT EXISTS (SELECT 1 AS \"one\" FROM \"information_schema\".\"columns\" WHERE (\"table_schema\" = $1 AND \"table_name\" = $2 AND \"column_name\" = $3)) AS \"result\"",
+        "params": [
+          "public",
+          "Order",
+          "transactionId"
+        ]
+      }
+    ]
+  }
+]

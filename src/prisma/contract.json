@@ -281,6 +281,13 @@
                   "kind": "scalar"
                 }
               },
+              "transactionId": {
+                "nullable": true,
+                "type": {
+                  "codecId": "pg/text@1",
+                  "kind": "scalar"
+                }
+              },
               "updatedAt": {
                 "nullable": false,
                 "type": {
@@ -370,6 +377,9 @@
                 },
                 "total": {
                   "column": "total"
+                },
+                "transactionId": {
+                  "column": "transactionId"
                 },
                 "updatedAt": {
                   "column": "updatedAt"
@@ -1252,6 +1262,11 @@
                   "nativeType": "float8",
                   "nullable": false
                 },
+                "transactionId": {
+                  "codecId": "pg/text@1",
+                  "nativeType": "text",
+                  "nullable": true
+                },
                 "updatedAt": {
                   "codecId": "pg/timestamp-temporal@1",
                   "default": {
@@ -1954,7 +1969,7 @@
         "kind": "postgres-schema"
       }
     },
-    "storageHash": "e160e579413d16f5d2574375d92f4607b293d0d6b6bdc038691570a253f9510e"
+    "storageHash": "c9c1a9637b74d214ae3eeebbb3a234d24d2661ebfe6f42539857ceeeeb30e270"
   },
   "execution": {
     "executionHash": "74fdc1b32a5f60b7c6e4e6e815b486587e95116ea3fc64a252d1ca4b796bc857",

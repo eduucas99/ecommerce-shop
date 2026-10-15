@@ -34,7 +34,7 @@ import type {
 } from '@prisma/orm-postgres/contract/types';
 
 export type StorageHash =
-  StorageHashBase<'e160e579413d16f5d2574375d92f4607b293d0d6b6bdc038691570a253f9510e'>;
+  StorageHashBase<'c9c1a9637b74d214ae3eeebbb3a234d24d2661ebfe6f42539857ceeeeb30e270'>;
 export type ExecutionHash =
   ExecutionHashBase<'74fdc1b32a5f60b7c6e4e6e815b486587e95116ea3fc64a252d1ca4b796bc857'>;
 export type ProfileHash =
@@ -267,6 +267,7 @@ export type FieldOutputTypes = {
       readonly subTotal: CodecTypes['pg/float8@1']['output'];
       readonly tax: CodecTypes['pg/float8@1']['output'];
       readonly total: CodecTypes['pg/float8@1']['output'];
+      readonly transactionId: CodecTypes['pg/text@1']['output'] | null;
       readonly updatedAt: CodecTypes['pg/timestamp-temporal@1']['output'];
       readonly userId: CodecTypes['pg/text@1']['output'];
     };
@@ -351,6 +352,7 @@ export type FieldInputTypes = {
       readonly subTotal: CodecTypes['pg/float8@1']['input'];
       readonly tax: CodecTypes['pg/float8@1']['input'];
       readonly total: CodecTypes['pg/float8@1']['input'];
+      readonly transactionId: CodecTypes['pg/text@1']['input'] | null;
       readonly updatedAt: CodecTypes['pg/timestamp-temporal@1']['input'];
       readonly userId: CodecTypes['pg/text@1']['input'];
     };
@@ -435,6 +437,7 @@ export type StorageColumnTypes = {
       readonly subTotal: CodecTypes['pg/float8@1']['output'];
       readonly tax: CodecTypes['pg/float8@1']['output'];
       readonly total: CodecTypes['pg/float8@1']['output'];
+      readonly transactionId: CodecTypes['pg/text@1']['output'] | null;
       readonly updatedAt: CodecTypes['pg/timestamp-temporal@1']['output'];
       readonly userId: CodecTypes['pg/text@1']['output'];
     };
@@ -519,6 +522,7 @@ export type StorageColumnInputTypes = {
       readonly subTotal: CodecTypes['pg/float8@1']['input'];
       readonly tax: CodecTypes['pg/float8@1']['input'];
       readonly total: CodecTypes['pg/float8@1']['input'];
+      readonly transactionId: CodecTypes['pg/text@1']['input'] | null;
       readonly updatedAt: CodecTypes['pg/timestamp-temporal@1']['input'];
       readonly userId: CodecTypes['pg/text@1']['input'];
     };
@@ -608,6 +612,7 @@ export namespace Models {
     subTotal: CodecTypes['pg/float8@1']['output'];
     tax: CodecTypes['pg/float8@1']['output'];
     total: CodecTypes['pg/float8@1']['output'];
+    transactionId: CodecTypes['pg/text@1']['output'] | null;
     updatedAt: CodecTypes['pg/timestamp-temporal@1']['output'];
     userId: CodecTypes['pg/text@1']['output'];
     OrderAddress: public_OrderAddress | null;
@@ -809,6 +814,11 @@ type ContractBase = Omit<
                   readonly nativeType: 'float8';
                   readonly codecId: 'pg/float8@1';
                   readonly nullable: false;
+                };
+                readonly transactionId: {
+                  readonly nativeType: 'text';
+                  readonly codecId: 'pg/text@1';
+                  readonly nullable: true;
                 };
                 readonly updatedAt: {
                   readonly nativeType: 'timestamp';
@@ -1466,6 +1476,10 @@ type ContractBase = Omit<
                 readonly nullable: false;
                 readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/float8@1' };
               };
+              readonly transactionId: {
+                readonly nullable: true;
+                readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/text@1' };
+              };
               readonly updatedAt: {
                 readonly nullable: false;
                 readonly type: {
@@ -1524,6 +1538,7 @@ type ContractBase = Omit<
                 readonly subTotal: { readonly column: 'subTotal' };
                 readonly tax: { readonly column: 'tax' };
                 readonly total: { readonly column: 'total' };
+                readonly transactionId: { readonly column: 'transactionId' };
                 readonly updatedAt: { readonly column: 'updatedAt' };
                 readonly userId: { readonly column: 'userId' };
               };
