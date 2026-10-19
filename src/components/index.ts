@@ -1,6 +1,8 @@
 export * from './products/product-grid/ProductGrid';
 export * from './products/product-grid/ProductGridItem';
 
+export * from './paypal/PayPalButton'
+
 export * from './product/size-selector/SizeSelector';
 export * from './product/quantity-selector/QuantitySelector';
 export * from './product/slideshow/ProductSlideShow';
@@ -14,4 +16,4 @@ export * from './ui/pagination/Pagination';
 export * from './ui/footer/Footer';
 export * from './ui/loading/LoadingOverlay';
 
-export * from './provider/Provider';
+export * from './providers/Providers';
