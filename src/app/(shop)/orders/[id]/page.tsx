@@ -100,7 +100,10 @@ export default async function OrdersByIdPage({params}: Props) {
             </div>
 
             <div className="mt-5 mb-2 w-full">
-              <PayPalButton />
+              <PayPalButton 
+                orderId={ order!.id }
+                amount={ order!.total }
+              />
             </div>
           </div>
         </div>
