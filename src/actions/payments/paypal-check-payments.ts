@@ -2,6 +2,7 @@
 
 import { PaypalOrderStatusResponse } from "@/interfaces";
 import { db } from "@/prisma/db";
+import { revalidatePath } from "next/cache";
 
 export const paypalCheckPayment = async( paypalTransactionId: string ) => {
     
@@ -25,7 +26,7 @@ export const paypalCheckPayment = async( paypalTransactionId: string ) => {
     }
 
     const { status, purchase_units } = resp;
-    //const { } = purchase_units[0]; // TODO invoice ID
+    const { invoice_id: orderId } = purchase_units[0];
 
     if ( status !== 'COMPLETED' ) {
         return{
@@ -37,13 +38,19 @@ export const paypalCheckPayment = async( paypalTransactionId: string ) => {
     try {
         console.log(status, purchase_units);
 
-        await db.orm.public.Order.where({id: '40baa072-1146-4b2b-81ac-08db99e46433' })
+        await db.orm.public.Order.where({id: orderId })
         .update(
             {
                 isPaid: true,
                 paidAt: Temporal.Now.instant(),
             }
         );
+
+        revalidatePath(`orders/${ orderId }`);
+
+        return {
+            ok: true
+        }
     } catch (error) {
         console.log(error);
         return{
