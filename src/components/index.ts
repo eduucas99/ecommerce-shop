@@ -17,3 +17,5 @@ export * from './ui/footer/Footer';
 export * from './ui/loading/LoadingOverlay';
 
 export * from './providers/Providers';
+
+export * from './orders/OrderStatus';
