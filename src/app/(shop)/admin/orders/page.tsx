@@ -5,6 +5,7 @@ import { Title } from '@/components';
 import Link from 'next/link';
 import { redirect } from 'next/navigation';
 import { IoCardOutline } from 'react-icons/io5';
+import {Pagination} from '@/components/ui/pagination/Pagination';
 
 export default async function OrderPage() {
 
@@ -78,6 +79,7 @@ export default async function OrderPage() {
             {/* //TODO IMPLEMENTAR PAGINACION */}
           </tbody>
         </table>
+        <Pagination totalPages={ 3 }/>
       </div>
     </>
   );

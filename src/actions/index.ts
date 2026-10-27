@@ -1,6 +1,6 @@
-export * from './product/product-pagination';
-export * from './product/get-product-by-slug';
-export * from './product/get-stock-by-slug';
+export * from './payments/product/product-pagination';
+export * from './payments/product/get-product-by-slug';
+export * from './payments/product/get-stock-by-slug';
 
 export * from './auth/login';
 export * from './auth/logout';
@@ -18,3 +18,5 @@ export * from './order/get-paginated-orders';
 
 export * from './payments/set-transaction-id';
 export * from './payments/paypal-check-payments';
+
+export * from './user/get-paginater-users';
