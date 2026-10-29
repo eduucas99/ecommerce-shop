@@ -20,3 +20,4 @@ export * from './payments/set-transaction-id';
 export * from './payments/paypal-check-payments';
 
 export * from './user/get-paginater-users';
+export * from './user/change-user-role';
