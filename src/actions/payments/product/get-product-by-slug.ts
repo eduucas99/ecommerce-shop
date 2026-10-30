@@ -8,7 +8,7 @@ export const getProductBySlug = async (slug: string) => {
         const product = await db.orm.public.Product.where({
             slug
         }).include("ProductImage", (image) =>
-            image.select("url").orderBy((i) => i.id.asc())
+            image.select("url", "id").orderBy((i) => i.id.asc())
         )
         .first();
 
