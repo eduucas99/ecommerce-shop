@@ -1,6 +1,7 @@
 "use client";
 
 import { Category, Product, ProductImage } from "@/interfaces";
+import clsx from "clsx";
 import Image from "next/image";
 import { useForm } from "react-hook-form";
 
@@ -26,7 +27,14 @@ interface FormInputs {
 }
 
 export const ProductForm = ({ product, categories }: Props) => {
-  const { handleSubmit, register, formState: { isValid } } = useForm<FormInputs>({
+  const { 
+    handleSubmit, 
+    register, 
+    formState: { isValid },
+    getValues,
+    setValue,
+    watch
+  } = useForm<FormInputs>({
     defaultValues: {
       ...product,
       description: product.description ?? "",
@@ -34,6 +42,17 @@ export const ProductForm = ({ product, categories }: Props) => {
       tags: product.tags.join(', '),
     }
   });
+
+  const selectedSizes = watch('sizes');
+  
+  const onSizeChanged = (size: string) => {
+    const currentSizes = getValues('sizes');
+    const nextSizes = currentSizes.includes(size)
+      ? currentSizes.filter((currentSize) => currentSize !== size)
+      : [...currentSizes, size];
+
+    setValue('sizes', nextSizes, { shouldDirty: true });
+  }
 
   const onSubmit = (data: FormInputs) =>{
     console.log({data}); 
@@ -106,8 +125,17 @@ export const ProductForm = ({ product, categories }: Props) => {
             
             {
               sizes.map( size => (
-                // bg-blue-500 text-white <--- si está seleccionado
-                <div key={ size } className="flex  items-center justify-center w-10 h-10 mr-2 border rounded-md">
+                <div 
+                  key={ size } 
+                  onClick={ () => onSizeChanged(size) }
+                  className={
+                    clsx(
+                      "p-2 border cursor-pointer rounded-md mr-2 w-14 transition-all text-center",
+                      {
+                        'bg-blue-600 text-white': selectedSizes.includes(size)
+                      }
+                    )
+                  }>
                   <span>{ size }</span>
                 </div>
               ))
