@@ -3,8 +3,10 @@
 import { createUpdateProduct } from "@/actions";
 import { Category, Product, ProductImage } from "@/interfaces";
 import clsx from "clsx";
+import { LoadingOverlay } from "@/components";
 import Image from "next/image";
 import { useForm } from "react-hook-form";
+import { useState } from "react";
 
 interface Props {
   product: Product & { ProductImage?: ProductImage[]};
@@ -28,6 +30,7 @@ interface FormInputs {
 }
 
 export const ProductForm = ({ product, categories }: Props) => {
+  const [loading, setLoading] = useState(false);
   const { 
     handleSubmit, 
     register, 
@@ -72,10 +75,17 @@ export const ProductForm = ({ product, categories }: Props) => {
     formData.append('categoryId', productToSave.categoryId ?? '' );
     formData.append('gender', productToSave.gender ?? '' );
     
-    const {ok} = await createUpdateProduct(formData);
+    setLoading(true);
+    try {
+      await createUpdateProduct(formData);
+    } finally {
+      setLoading(false);
+    }
   }
 
   return (
+    <>
+    {loading && <LoadingOverlay />}
     <form onSubmit={handleSubmit(onSubmit)} className="grid px-5 mb-16 grid-cols-1 sm:px-0 sm:grid-cols-2 gap-3">
       <div className="w-full">
         <div className="flex flex-col mb-2">
@@ -201,5 +211,6 @@ export const ProductForm = ({ product, categories }: Props) => {
         </div>
       </div>
     </form>
+    </>
   );
 };
