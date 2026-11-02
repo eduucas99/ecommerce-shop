@@ -3,12 +3,11 @@
 import { useCartStore } from "@/store";
 import { LoadingOverlay, QuantitySelector } from "@/components";
 import { useEffect, useState } from "react";
-import Image from "next/image";
 import Link from "next/link";
 import { IoTrashOutline } from "react-icons/io5";
 import { currencyFormat } from '@/utils/currencyFormat';
 import { redirect } from "next/navigation";
-
+import { ProductImage } from "@/components";
 
 export const ProductsInCart = () => {
     const updateProductQuantity = useCartStore( state => state.updateProductQuantity );
@@ -33,15 +32,15 @@ export const ProductsInCart = () => {
             {
                 productsInCart.map(product => (
                     <div key={`${product.slug} - ${ product.size }`} className="mb-5 flex max-[961px]:items-center max-[961px]:justify-center">
-                        <Image
-                            src={`/products/${product.image}`}
+                        <ProductImage
+                            src={product.image}
+                            alt={product.title} 
                             width={100}
                             height={100}
                             style={{
                             width: '100px',
                             height: '110px',
                             }}
-                            alt={product.title}
                             className="mr-5 rounded"
                         />
                         <div>

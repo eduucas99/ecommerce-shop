@@ -191,7 +191,7 @@ export const ProductForm = ({ product, categories }: Props) => {
           </div>
 
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
-            {
+            {product.ProductImage?.length ? (
               product.ProductImage?.map( image => (
                 <div key={image.id}>
                   <Image 
@@ -212,7 +212,15 @@ export const ProductForm = ({ product, categories }: Props) => {
                 </div>
 
               ))
-            }
+            ) : (
+              <Image
+                alt="Imagen placeholder del producto"
+                src="/imgs/placeholder.jpg"
+                width={300}
+                height={300}
+                className="rounded-t shadow-md"
+              />
+            )}
           </div>
 
         </div>
