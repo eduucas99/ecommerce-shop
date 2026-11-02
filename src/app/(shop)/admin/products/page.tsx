@@ -21,7 +21,7 @@ export default async function OrderPage({searchParams}: Props) {
     <>
       <Title title="Mantenimiento de Productos" />
       <div className='flex justify-end mb-5'>
-        <Link href="/admin/product/new-product" className='btn-primary'>
+        <Link href="/admin/product/new" className='btn-primary'>
           Nuevo Producto
         </Link>
       </div>

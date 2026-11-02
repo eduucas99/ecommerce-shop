@@ -50,15 +50,19 @@ export const createUpdateProduct = async( formData: FormData ) => {
                 sizes: rest.sizes as Size[],
                 tags: tagsArray,
             });
-
-            console.log({updatedProduct: product})
         }else{
-            //crear producto
+            const product = await tx.orm.public.Product.create({
+                ...rest,
+                sizes: rest.sizes as Size[],
+                tags: tagsArray,
+            });
+
+            console.log("Producto creado: ", {product});
         }
 
 
         return {
-        
+            ok: true
         }
     });
 

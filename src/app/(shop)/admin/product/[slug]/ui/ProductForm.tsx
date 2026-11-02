@@ -9,7 +9,7 @@ import { useForm } from "react-hook-form";
 import { useState } from "react";
 
 interface Props {
-  product: Product & { ProductImage?: ProductImage[]};
+  product: Partial<Product> & { ProductImage?: ProductImage[]};
   categories: Category[];
 }
 
@@ -42,8 +42,8 @@ export const ProductForm = ({ product, categories }: Props) => {
     defaultValues: {
       ...product,
       description: product.description ?? "",
-      sizes: [...product.sizes],
-      tags: product.tags.join(', '),
+      sizes: [...(product.sizes ?? [])],
+      tags: product.tags?.join(', ') ?? '',
     }
   });
 
@@ -64,7 +64,9 @@ export const ProductForm = ({ product, categories }: Props) => {
 
     const {...productToSave } = data;
     
-    formData.append('id', product.id ?? '' );
+    if ( product.id ){
+      formData.append('id', product.id ?? '' );
+    }
     formData.append('title', productToSave.title ?? '' );
     formData.append('slug', productToSave.slug ?? '' );
     formData.append('description', productToSave.description ?? '' );
@@ -76,6 +78,7 @@ export const ProductForm = ({ product, categories }: Props) => {
     formData.append('gender', productToSave.gender ?? '' );
     
     setLoading(true);
+    
     try {
       await createUpdateProduct(formData);
     } finally {
@@ -145,8 +148,12 @@ export const ProductForm = ({ product, categories }: Props) => {
       </div>
 
       <div className="w-full">
-        <div className="flex flex-col">
+        <div className="flex flex-col mb-2">
+          <span>Inventario</span>
+          <input type="number" className="p-2 border rounded-md bg-gray-200" {...register('inStock', { required: true, min:0 })} />
+        </div>
 
+        <div className="flex flex-col">
           <span>Tallas</span>
           <div className="flex flex-wrap">
             
