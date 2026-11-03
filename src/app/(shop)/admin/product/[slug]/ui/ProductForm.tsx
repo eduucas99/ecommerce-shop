@@ -3,10 +3,11 @@
 import { createUpdateProduct } from "@/actions";
 import { Category, Product, ProductImage } from "@/interfaces";
 import clsx from "clsx";
-import { LoadingOverlay } from "@/components";
+import { LoadingOverlay, Notification } from "@/components";
 import Image from "next/image";
 import { useForm } from "react-hook-form";
 import { useState } from "react";
+import { useRouter } from "next/navigation";
 
 interface Props {
   product: Partial<Product> & { ProductImage?: ProductImage[]};
@@ -29,8 +30,16 @@ interface FormInputs {
   //todo: imagenes
 }
 
+type FormNotification = {
+  color: "green" | "red";
+  message: string;
+};
+
 export const ProductForm = ({ product, categories }: Props) => {
+
+  const router = useRouter();
   const [loading, setLoading] = useState(false);
+  const [notification, setNotification] = useState<FormNotification | null>(null);
   const { 
     handleSubmit, 
     register, 
@@ -59,6 +68,7 @@ export const ProductForm = ({ product, categories }: Props) => {
   }
 
   const onSubmit = async (data: FormInputs) =>{
+    setNotification(null);
     
     const formData = new FormData();
 
@@ -67,6 +77,7 @@ export const ProductForm = ({ product, categories }: Props) => {
     if ( product.id ){
       formData.append('id', product.id ?? '' );
     }
+
     formData.append('title', productToSave.title ?? '' );
     formData.append('slug', productToSave.slug ?? '' );
     formData.append('description', productToSave.description ?? '' );
@@ -80,7 +91,31 @@ export const ProductForm = ({ product, categories }: Props) => {
     setLoading(true);
     
     try {
-      await createUpdateProduct(formData);
+      const {ok, product:updatedProduct} = await createUpdateProduct(formData);
+
+      console.log("ok:" , ok)
+      if (!ok) {
+        setNotification({
+          color: "red",
+          message: "Error al crear o actualizar el producto",
+        });
+        return;
+      }
+
+      setNotification({
+        color: "green",
+        message: "Producto creado/actualizado correctamente",
+      });
+      window.setTimeout(() => {
+        router.replace(`/admin/product/${updatedProduct?.slug}`);
+      }, 2500);
+    } catch (error) {
+      setNotification({
+        color: "red",
+        message: error instanceof Error
+          ? error.message
+          : "No se pudo guardar el producto",
+      });
     } finally {
       setLoading(false);
     }
@@ -89,6 +124,17 @@ export const ProductForm = ({ product, categories }: Props) => {
   return (
     <>
     {loading && <LoadingOverlay />}
+    {notification && (
+      <div className="pointer-events-none fixed inset-0 z-60 flex items-center justify-center px-4">
+        <div className="pointer-events-auto w-full max-w-md">
+        <Notification
+          color={notification.color}
+          message={notification.message}
+          durationSeconds={5}
+        />
+        </div>
+      </div>
+    )}
     <form onSubmit={handleSubmit(onSubmit)} className="grid px-5 mb-16 grid-cols-1 sm:px-0 sm:grid-cols-2 gap-3">
       <div className="w-full">
         <div className="flex flex-col mb-2">

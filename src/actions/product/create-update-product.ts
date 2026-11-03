@@ -3,6 +3,7 @@
 import { Size } from '@/interfaces';
 import { db } from '@/prisma/db';
 import type { ResultType } from '@prisma/orm-postgres/components/runtime';
+import { revalidatePath } from 'next/cache';
 import { z } from 'zod';
 
 type Product = ResultType<typeof db.orm.public.Product>;
@@ -27,9 +28,10 @@ export const createUpdateProduct = async( formData: FormData ) => {
     const productParsed = productSchema.safeParse( data );
 
     if ( !productParsed.success ){
-        console.log(productParsed.error);
+        console.log("error: ",productParsed.error);
         return {
-            ok: false
+            ok: false,
+            message: 'Error al crear/actualizar el producto'
         }
     }
 
@@ -38,35 +40,57 @@ export const createUpdateProduct = async( formData: FormData ) => {
 
     const {id, ...rest} = product;
 
-    const prismaTransaction = await db.transaction(async(tx)=>{
-        let product: Product;
-        const tagsArray = rest.tags.split(',').map( tag => tag.trim().toLowerCase() );
-        
-        if ( id ){
-            const product = await tx.orm.public.Product
-            .where({ id })
-            .update({
-                ...rest,
-                sizes: rest.sizes as Size[],
-                tags: tagsArray,
-            });
-        }else{
-            const product = await tx.orm.public.Product.create({
-                ...rest,
-                sizes: rest.sizes as Size[],
-                tags: tagsArray,
-            });
+    try {
+        const prismaTransaction = await db.transaction(async(tx)=>{
+            let product: Product;
+            const tagsArray = rest.tags.split(',').map( tag => tag.trim().toLowerCase() );
+            
+            if ( id ){
 
-            console.log("Producto creado: ", {product});
-        }
+                const product = await tx.orm.public.Product
+                .where({ id })
+                .update({
+                    ...rest,
+                    sizes: rest.sizes as Size[],
+                    tags: tagsArray,
+                });
 
+                return{
+                    ok: true,
+                    product
+                }
+                
+            }else{
+                const product = await tx.orm.public.Product.create({
+                    ...rest,
+                    sizes: rest.sizes as Size[],
+                    tags: tagsArray,
+                });
+
+                return {
+                    ok: true,
+                    product
+                }
+            }
+    
+    
+        });
+
+        revalidatePath('/admin/products');
+        revalidatePath(`/admin/products/${product.slug}`);
+        revalidatePath(`/products/${product.slug}`);
 
         return {
-            ok: true
+            ok: true,
+            product: prismaTransaction.product
         }
-    });
 
-    return{
-        ok: true
+    }catch (error) {
+        console.log("Error: ", error)
+        return {
+            ok: false,
+            message: 'Error al crear/actualizar el producto'
+        }
     }
+
 }
