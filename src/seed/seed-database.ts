@@ -54,7 +54,9 @@ async function main() {
 
         //* Inserto Imagenes
         const imagesData = images.map(image => ({
-            url: image,
+            url: image.startsWith('http')
+                ? image
+                : `/products/${image.replace(/^\/?products\//, '').replace(/^\/+/, '')}`,
             productId: dbProduct.id
         }));
 

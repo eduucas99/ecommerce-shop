@@ -10,15 +10,10 @@ interface Props {
 }
 
 export const ProductImage = ({ src, alt, className, width, height, style }: Props) => {
-    
-    const localSrc = (src) 
-    ? src.startsWith('http') 
-    ? src : `/products/${ src }` : '/imgs/placeholder.jpg';
-
     return (
     <>
         <Image 
-            src={ localSrc }
+            src={src?.startsWith('http') ? src : src ? `/${src.replace(/^\/+/, '')}` : '/imgs/placeholder.jpg'}
             width={ width }
             height={ height }
             alt={ alt }

@@ -21,7 +21,7 @@ export default async function ProductPage({ params }: Props) {
     if ( !product && slug !== 'new' ) { 
         redirect('/admin/products');
     }
-    console.log({product})
+
     const title = (slug === 'new') ? 'Nuevo Producto' : 'Editar Producto';
     return (
         <>

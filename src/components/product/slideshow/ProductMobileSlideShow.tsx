@@ -33,12 +33,12 @@ export const ProductMobileSlideShow = ({images, title, className}: Props) => {
             className="mySwiperMobile"
         >
             {
-                images.map( image => (
+                images.map(image => (
                     <SwiperSlide key={image}>
                         <Image
-                            width={ 600 }
-                            height={ 500 }
-                            src={`/products/${ image }`}
+                            width={600}
+                            height={500}
+                            src={image.startsWith('http') ? image : `/${image.replace(/^\/+/, '')}`}
                             alt={title}
                         />
                     </SwiperSlide>

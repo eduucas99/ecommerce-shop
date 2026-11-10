@@ -32,10 +32,14 @@ export default async function OrdersByIdPage({params}: Props) {
             <OrderStatus isPaid={ order?.isPaid ?? false } />
             {/* Items */}
             {
-              orderItem?.map( order => (
+              orderItem?.map(order => (
                 <div key={order?.product?.slug + "-"+ order?.size} className="flex mb-5">
                   <Image
-                    src={`/products/${order?.product?.ProductImage[0].url}`}
+                    src={order?.product?.ProductImage[0]?.url?.startsWith('http')
+                      ? order.product.ProductImage[0].url
+                      : order?.product?.ProductImage[0]?.url
+                        ? `/${order.product.ProductImage[0].url.replace(/^\/+/, '')}`
+                        : '/imgs/placeholder.jpg'}
                     width={100}
                     height={100}
                     style={{

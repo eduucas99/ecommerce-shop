@@ -84,9 +84,25 @@ export const createUpdateProduct = async( formData: FormData ) => {
     
         });
 
-        if (formData.getAll('images')) {
-           const images = await uploadImages(formData.getAll('images') as File[]);
-           console.log(images)
+
+        const files = formData.getAll('images') as File[];
+
+        if (files.length > 0) {
+            const productId = prismaTransaction?.product?.id;
+
+            if (!productId) {
+                throw new Error('No se encontró el producto para asociar las imágenes.');
+            }
+           
+            const images = await uploadImages(formData.getAll('images') as File[]);
+           
+           if ( !images ){
+                throw new Error('No se pudo cargar las imágenes.');
+            }
+
+            await db.orm.public.ProductImage.createAll(
+                images.map((url) => ({ productId, url: url ?? '' }))
+            );
         }
 
         revalidatePath('/admin/products');

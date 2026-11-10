@@ -30,7 +30,7 @@ export const ProductsInCart = () => {
                 productsInCart.map(product => (
                     <div key={`${product.slug} - ${ product.size }`} className="mb-5 flex max-[961px]:items-center max-[961px]:justify-center">
                         <Image
-                            src={`/products/${product.image}`}
+                            src={product.image.startsWith('http') ? product.image : `/${product.image.replace(/^\/+/, '')}`}
                             width={100}
                             height={100}
                             style={{

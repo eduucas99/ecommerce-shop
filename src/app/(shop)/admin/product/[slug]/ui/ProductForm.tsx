@@ -249,7 +249,7 @@ export const ProductForm = ({ product, categories }: Props) => {
                 <div key={image.id}>
                   <Image 
                     alt={ product.title ?? ''}
-                    src={ `/products/${image.url}` }
+                    src={ image.url }
                     width={300}
                     height={300}
                     className="rounded-t shadow-md"
