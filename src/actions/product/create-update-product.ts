@@ -5,6 +5,13 @@ import { db } from '@/prisma/db';
 import type { ResultType } from '@prisma/orm-postgres/components/runtime';
 import { revalidatePath } from 'next/cache';
 import { z } from 'zod';
+import { v2 as cloudinary } from 'cloudinary';
+
+cloudinary.config({
+    cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
+    api_key: process.env.CLOUDINARY_API_KEY,
+    api_secret: process.env.CLOUDINARY_API_SECRET,
+});
 
 type Product = ResultType<typeof db.orm.public.Product>;
 
@@ -66,7 +73,8 @@ export const createUpdateProduct = async( formData: FormData ) => {
                     sizes: rest.sizes as Size[],
                     tags: tagsArray,
                 });
-
+                
+               
                 return {
                     ok: true,
                     product
@@ -75,6 +83,11 @@ export const createUpdateProduct = async( formData: FormData ) => {
     
     
         });
+
+        if (formData.getAll('images')) {
+           const images = await uploadImages(formData.getAll('images') as File[]);
+           console.log(images)
+        }
 
         revalidatePath('/admin/products');
         revalidatePath(`/admin/products/${product.slug}`);
@@ -93,4 +106,31 @@ export const createUpdateProduct = async( formData: FormData ) => {
         }
     }
 
+}
+
+const uploadImages = async (files: File[]) => {
+    try {
+        const uploadPromises = files.map(async (file) => {
+            try {
+                const buffer = Buffer.from(await file.arrayBuffer());
+                const base64 = buffer.toString('base64');
+
+                const result = await cloudinary.uploader.upload(
+                    `data:${file.type};base64,${base64}`,
+                    { folder: 'ecommerce-shop' }
+                );
+
+                return result.secure_url;
+            } catch (error) {
+                console.error('Error al subir imagen a Cloudinary:', error);
+                return null;
+            }
+        });
+        
+        const uploadedImages = await Promise.all(uploadPromises);
+        return uploadedImages;
+    } catch (error) {
+        console.log('Error al subir imagenes: ', error);
+        return null
+    }
 }

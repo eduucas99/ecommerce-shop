@@ -27,7 +27,7 @@ interface FormInputs {
   gender: 'men'|'women'|'kid'|'unisex';
   categoryId: string;
 
-  //todo: imagenes
+  images?: FileList;
 }
 
 type FormNotification = {
@@ -53,6 +53,7 @@ export const ProductForm = ({ product, categories }: Props) => {
       description: product.description ?? "",
       sizes: [...(product.sizes ?? [])],
       tags: product.tags?.join(', ') ?? '',
+      images: undefined
     }
   });
 
@@ -72,7 +73,7 @@ export const ProductForm = ({ product, categories }: Props) => {
     
     const formData = new FormData();
 
-    const {...productToSave } = data;
+    const {images, ...productToSave } = data;
     
     if ( product.id ){
       formData.append('id', product.id ?? '' );
@@ -88,12 +89,17 @@ export const ProductForm = ({ product, categories }: Props) => {
     formData.append('categoryId', productToSave.categoryId ?? '' );
     formData.append('gender', productToSave.gender ?? '' );
     
+    if (images && images.length > 0) {
+      for (const image of images) {
+        formData.append('images', image);
+      }
+    }
+    
     setLoading(true);
     
     try {
       const {ok, product:updatedProduct} = await createUpdateProduct(formData);
 
-      console.log("ok:" , ok)
       if (!ok) {
         setNotification({
           color: "red",
@@ -229,9 +235,10 @@ export const ProductForm = ({ product, categories }: Props) => {
             <span>Fotos</span>
             <input 
               type="file"
+              { ...register('images') }
               multiple 
-              className="p-2 border rounded-md bg-gray-200" 
-              accept="image/png, image/jpeg"
+              className="p-2 border rounded-md bg-gray-200 file:mr-3 file:cursor-pointer file:rounded-md file:border-0 file:bg-white file:px-4 file:py-2 file:font-medium file:text-black hover:file:bg-gray-100"
+              accept="image/png, image/jpeg, image/avif"
             />
 
           </div>
